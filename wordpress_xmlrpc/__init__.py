@@ -1,9 +1,4 @@
 #!/usr/bin/python
-""""
-  Copyright 2010 Max Cutler. All Rights Reserved.
-
-  For license information please check the LICENSE page of the package.
-"""
 
 import xmlrpclib
 import urllib
@@ -42,8 +37,33 @@ class WordPressPost(object):
             self.allow_comments = False
             self.allow_pings = False
             self.tags = ''
-            self.categories = []
+            self.categories = ['Uncategorized']
             self.custom_fields = []
+
+    @property
+    def content_struct(self):
+        struct = {
+            'post_type': 'post',
+            'wp_author_id': self.user,
+            'title': self.title,
+            'description': self.description,
+            'post_status': self.post_status,
+            'mt_excerpt': self.excerpt,
+            'mt_text_more': self.extended_text,
+            'mt_keywords': self.tags,
+            'mt_allow_comments': int(self.allow_comments),
+            'mt_allow_pings': int(self.allow_pings),
+            'dateCreated': xmlrpclib.DateTime(self.date_created),
+            'categories': self.categories,
+        }
+
+        if self.slug:
+            struct['wp_slug'] = self.slug
+
+        if self.custom_fields:
+            struct['custom_fields'] = self.custom_fields
+
+        return struct
 
     def __str__(self):
         return '%s (id=%s)' % (self.slug, self.id)
@@ -70,6 +90,12 @@ class Client(object):
     def get_recent_posts(self, num_posts=10):
         posts = self.server.metaWeblog.getRecentPosts(self.blog_id, self.username, self.password, num_posts)
         return [WordPressPost(post) for post in posts]
+
+    def new_post(self, post, publish=True):
+        return self.server.metaWeblog.newPost(self.blog_id, self.username, self.password, post.content_struct, publish)
+
+    def edit_post(self, post, publish=True):
+        return self.server.metaWeblog.editPost(post.id, self.username, self.password, post.content_struct, publish)
 
 def main():
     pass
