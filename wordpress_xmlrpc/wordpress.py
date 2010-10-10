@@ -133,12 +133,12 @@ class WordPressCategory(WordPressBase):
 
 	def __init__(self, xmlrpc=None):
 		if xmlrpc:
-			self.cat_id = xmlrpc['categoryId']
-			self.parent_id = xmlrpc['parentId']
-			self.name = xmlrpc['categoryName']
-			self.description = xmlrpc['categoryDescription']
-			self.url = xmlrpc['htmlUrl']
-			self.rss = xmlrpc['rssUrl']
+			self.cat_id = xmlrpc.get('categoryId', None)
+			self.parent_id = xmlrpc.get('parentId', None)
+			self.name = xmlrpc.get('categoryName', '')
+			self.description = xmlrpc.get('categoryDescription', '')
+			self.url = xmlrpc.get('htmlUrl', '')
+			self.rss = xmlrpc.get('rssUrl', '')
 
 	@property
 	def content_struct(self):

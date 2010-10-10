@@ -4,7 +4,7 @@ from wordpress_xmlrpc.wordpress import WordPressCategory
 
 class GetCategories(AuthenticatedMethod):
 	method_name = 'wp.getCategories'
-	# results_class = WordPressCategory
+	results_class = WordPressCategory
 
 class NewCategory(AuthenticatedMethod):
 	method_name = 'wp.newCategory'
@@ -17,3 +17,8 @@ class DeleteCategory(AuthenticatedMethod):
 class SuggestCategories(AuthenticatedMethod):
 	method_name = 'wp.suggestCategories'
 	method_args = ('category', 'max_results')
+
+class GetPostCategories(AuthParamsOffsetMixin, AuthenticatedMethod):
+	method_name = 'mt.getPostCategories'
+	method_args = ('post_id',)
+	results_class = WordPressCategory
