@@ -1,7 +1,7 @@
 Overview
 ==========
 
-Python library to interface with a WordPress blog's XML-RPC API.
+Python library to interface with a WordPress blog's [XML-RPC API](http://codex.wordpress.org/XML-RPC_Support).
 
 An implementation of the standard WordPress API methods is provided,
 but the library is designed for easy integration with custom
@@ -13,7 +13,9 @@ return these objects when possible.
 
 NOTE: The XML-RPC API is disabled in WordPress by default. To enable,
 go to Settings->Writing->Remote Publishing and check the box for
-XML-RPC. This library has been developed against and tested on Wordpress 3.0.
+XML-RPC.
+
+This library was developed against and tested on WordPress 3.0.
 
 Usage
 ==========
