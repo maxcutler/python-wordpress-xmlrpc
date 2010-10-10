@@ -13,3 +13,7 @@ class NewCategory(AuthenticatedMethod):
 class DeleteCategory(AuthenticatedMethod):
 	method_name = 'wp.deleteCategory'
 	method_args = ('category_id',)
+
+class SuggestCategories(AuthenticatedMethod):
+	method_name = 'wp.suggestCategories'
+	method_args = ('category', 'max_results')
