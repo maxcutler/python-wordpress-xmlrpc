@@ -1,6 +1,6 @@
 from wordpress_xmlrpc.base import *
 from wordpress_xmlrpc.mixins import *
-from wordpress_xmlrpc.wordpress import *
+from wordpress_xmlrpc.wordpress import WordPressPost
 
 class GetRecentPosts(AuthenticatedMethod):
     method_name = 'metaWeblog.getRecentPosts'
