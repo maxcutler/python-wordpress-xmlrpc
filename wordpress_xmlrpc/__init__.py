@@ -135,6 +135,10 @@ class AuthenticatedMethod(XmlrpcMethod):
         else:
             return (client.username, client.password)
 
+class AuthParamsOffsetMixin(object):
+    requires_blog = False
+    default_args_position = 1
+
 class SayHello(AnonymousMethod):
     method_name = 'demo.sayHello'
 
@@ -149,11 +153,9 @@ class GetRecentPosts(AuthenticatedMethod):
     def process_result(self, post_list):
         return [WordPressPost(post) for post in post_list]
 
-class GetPost(AuthenticatedMethod):
+class GetPost(AuthParamsOffsetMixin, AuthenticatedMethod):
     method_name = 'metaWeblog.getPost'
     method_args = ('post_id',)
-    requires_blog = False
-    default_args_position = 1
 
     def process_result(self, raw_post):
         return WordPressPost(raw_post)
@@ -162,11 +164,9 @@ class NewPost(AuthenticatedMethod):
     method_name = 'metaWeblog.newPost'
     method_args = ('content', 'publish')
 
-class EditPost(AuthenticatedMethod):
+class EditPost(AuthParamsOffsetMixin, AuthenticatedMethod):
     method_name = 'metaWeblog.editPost'
     method_args = ('post_id', 'content', 'publish')
-    requires_blog = False
-    default_args_position = 1
 
 def main():
     pass
