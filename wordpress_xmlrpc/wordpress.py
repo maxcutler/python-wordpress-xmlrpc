@@ -1,145 +1,156 @@
 import xmlrpclib
 
+
 class FieldMap(object):
-	"""
-	Container for settings mapping a WordPress XML-RPC request/response struct
-	to a Python, programmer-friendly class. 
-	"""
-	def __init__(self, inputName, outputNames=None, default=None, conversion=None):
-		self.name = inputName
-		self.output_names = outputNames or [inputName]
-		self.default = default
-		self.conversion = conversion
+    """
+    Container for settings mapping a WordPress XML-RPC request/response struct
+    to a Python, programmer-friendly class.
+    """
+
+    def __init__(self, inputName, outputNames=None, default=None, conversion=None):
+        self.name = inputName
+        self.output_names = outputNames or [inputName]
+        self.default = default
+        self.conversion = conversion
+
 
 class WordPressBase(object):
-	"""
-	Base class for representing a WordPress object. Handles conversion
-	of an XML-RPC response to an object, and construction of a `struct`
-	to use in XML-RPC requests.
+    """
+    Base class for representing a WordPress object. Handles conversion
+    of an XML-RPC response to an object, and construction of a `struct`
+    to use in XML-RPC requests.
 
-	Child classes should define a `definition` property that contains
-	the list of fields and a `FieldMap` instance to handle conversion
-	for XML-RPC calls.
-	"""
-	def __init__(self, xmlrpc=None):
-		if self.definition:
-			self._def = {}
-			for key, value in self.definition.items():
-				if isinstance(value, FieldMap):
-					self._def[key] = value
-				else:
-					self._def[key] = FieldMap(value)
+    Child classes should define a `definition` property that contains
+    the list of fields and a `FieldMap` instance to handle conversion
+    for XML-RPC calls.
+    """
 
-		if xmlrpc and self._def:
-			for var, fmap in self._def.items():
-				setattr(self, var, xmlrpc.get(fmap.name, fmap.default))
+    def __init__(self, xmlrpc=None):
+        if self.definition:
+            self._def = {}
+            for key, value in self.definition.items():
+                if isinstance(value, FieldMap):
+                    self._def[key] = value
+                else:
+                    self._def[key] = FieldMap(value)
 
-	@property
-	def struct(self):
-		data = {}
-		for var, fmap in self._def.items():
-			if hasattr(self, var):
-				for output in fmap.output_names:
-					if fmap.conversion:
-						data[output] = fmap.conversion(getattr(self, var))
-					else:
-						data[output] = getattr(self, var)
-		return data
+        if xmlrpc and self._def:
+            for var, fmap in self._def.items():
+                setattr(self, var, xmlrpc.get(fmap.name, fmap.default))
 
-	def __repr__(self):
-		return '<%s: %s>' % (self.__class__.__name__, str(self))
+    @property
+    def struct(self):
+        data = {}
+        for var, fmap in self._def.items():
+            if hasattr(self, var):
+                for output in fmap.output_names:
+                    if fmap.conversion:
+                        data[output] = fmap.conversion(getattr(self, var))
+                    else:
+                        data[output] = getattr(self, var)
+        return data
+
+    def __repr__(self):
+        return '<%s: %s>' % (self.__class__.__name__, str(self))
+
 
 class WordPressPost(WordPressBase):
-	definition = {
-		'id': 'postid',
-		'user': 'wp_author_id',
-		'date_created': FieldMap('dateCreated', conversion=xmlrpclib.DateTime),
-		'slug': 'wp_slug',
-		'post_status': 'post_status',
-		'title': 'title',
-		'description': 'description',
-		'excerpt': 'mt_excerpt',
-		'extended_text': 'mt_text_more',
-		'link': 'link',
-		'permalink': 'permaLink',
-		'allow_comments': FieldMap('mt_allow_comments', conversion=int),
-		'allow_pings': FieldMap('mt_allow_pings', conversion=int),
-		'tags': 'mt_keywords',
-		'categories': 'categories',
-		'custom_fields': 'custom_fields',
-		'post_type': FieldMap('post_type', default='post'),
-	}
+    definition = {
+        'id': 'postid',
+        'user': 'wp_author_id',
+        'date_created': FieldMap('dateCreated', conversion=xmlrpclib.DateTime),
+        'slug': 'wp_slug',
+        'post_status': 'post_status',
+        'title': 'title',
+        'description': 'description',
+        'excerpt': 'mt_excerpt',
+        'extended_text': 'mt_text_more',
+        'link': 'link',
+        'permalink': 'permaLink',
+        'allow_comments': FieldMap('mt_allow_comments', conversion=int),
+        'allow_pings': FieldMap('mt_allow_pings', conversion=int),
+        'tags': 'mt_keywords',
+        'categories': 'categories',
+        'custom_fields': 'custom_fields',
+        'post_type': FieldMap('post_type', default='post'),
+    }
 
-	def __str__(self):
-		return '%s (id=%s)' % (self.slug, self.id)
+    def __str__(self):
+        return '%s (id=%s)' % (self.slug, self.id)
+
 
 class WordPressBlog(WordPressBase):
-	definition = {
-		'id': 'blogid',
-		'name': 'blogName',
-		'url': 'url',
-		'xmlrpc': 'xmlrpc',
-		'is_admin': FieldMap('isAdmin', default=False)
-	}
+    definition = {
+        'id': 'blogid',
+        'name': 'blogName',
+        'url': 'url',
+        'xmlrpc': 'xmlrpc',
+        'is_admin': FieldMap('isAdmin', default=False),
+    }
 
-	def __str__(self):
-		return self.name
+    def __str__(self):
+        return self.name
+
 
 class WordPressAuthor(WordPressBase):
-	definition = {
-		'user_id': 'user_id',
-		'user_login': 'user_login',
-		'display_name': 'display_name',
-	}
+    definition = {
+        'user_id': 'user_id',
+        'user_login': 'user_login',
+        'display_name': 'display_name',
+    }
 
-	def __str__(self):
-		return self.display_name
+    def __str__(self):
+        return self.display_name
+
 
 class WordPressUser(WordPressBase):
-	definition = {
-		'user_id': 'userid',
-		'nickname': 'nickname',
-		'url': 'url',
-		'first_name': 'firstname',
-		'last_name': 'lastname',
-	}
+    definition = {
+        'user_id': 'userid',
+        'nickname': 'nickname',
+        'url': 'url',
+        'first_name': 'firstname',
+        'last_name': 'lastname',
+    }
 
-	def __str__(self):
-		return self.nickname
+    def __str__(self):
+        return self.nickname
+
 
 class WordPressCategory(WordPressBase):
-	definition = {
-		'cat_id': 'categoryId',
-		'parent_id': 'parentId',
-		'name': FieldMap('categoryName', ['categoryName', 'name']),
-		'description': 'categoryDescription',
-		'url': 'htmlUrl',
-		'rss': 'rssUrl',
-	}
+    definition = {
+        'cat_id': 'categoryId',
+        'parent_id': 'parentId',
+        'name': FieldMap('categoryName', ['categoryName', 'name']),
+        'description': 'categoryDescription',
+        'url': 'htmlUrl',
+        'rss': 'rssUrl',
+    }
 
-	def __str__(self):
-		return self.name
+    def __str__(self):
+        return self.name
+
 
 class WordPressTag(WordPressBase):
-	definition = {
-		'tag_id': 'tag_id',
-		'name': 'name',
-		'count': 'count',
-		'slug': 'slug',
-		'url': 'html_url',
-		'rss': 'rss_url',
-	}
+    definition = {
+        'tag_id': 'tag_id',
+        'name': 'name',
+        'count': 'count',
+        'slug': 'slug',
+        'url': 'html_url',
+        'rss': 'rss_url',
+    }
 
-	def __str__(self):
-		return self.name
+    def __str__(self):
+        return self.name
+
 
 class WordPressOption(WordPressBase):
-	definition = {
-		'name': 'name',
-		'description': 'desc',
-		'value': 'value',
-		'read_only': FieldMap('readonly', default=False),
-	}
+    definition = {
+        'name': 'name',
+        'description': 'desc',
+        'value': 'value',
+        'read_only': FieldMap('readonly', default=False),
+    }
 
-	def __str__(self):
-		return '%s="%s"' % (self.name, self.value)
+    def __str__(self):
+        return '%s="%s"' % (self.name, self.value)

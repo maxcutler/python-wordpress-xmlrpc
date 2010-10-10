@@ -2,40 +2,43 @@ from wordpress_xmlrpc.base import *
 from wordpress_xmlrpc.mixins import *
 from wordpress_xmlrpc.wordpress import WordPressBlog, WordPressAuthor, WordPressUser
 
+
 class GetUserInfo(BloggerApiMethodMixin, AuthenticatedMethod):
-	"""
-	Retrieve information about the connected user.
+    """
+    Retrieve information about the connected user.
 
-	Parameters:
-		None
+    Parameters:
+        None
 
-	Returns: instance of `WordPressUser` reprenting the user whose credentials are being used with the XML-RPC API.
-	"""
-	method_name = 'blogger.getUserInfo'
-	requires_blog = False
-	results_class = WordPressUser
+    Returns: instance of `WordPressUser` reprenting the user whose credentials are being used with the XML-RPC API.
+    """
+    method_name = 'blogger.getUserInfo'
+    requires_blog = False
+    results_class = WordPressUser
+
 
 class GetUsersBlogs(AuthenticatedMethod):
-	"""
-	Retrieve list of blogs that this user belongs to.
+    """
+    Retrieve list of blogs that this user belongs to.
 
-	Parameters:
-		None
+    Parameters:
+        None
 
-	Returns: `list` of `WordPressBlog` instances.
-	"""
-	method_name = 'wp.getUsersBlogs'
-	requires_blog = False
-	results_class = WordPressBlog
+    Returns: `list` of `WordPressBlog` instances.
+    """
+    method_name = 'wp.getUsersBlogs'
+    requires_blog = False
+    results_class = WordPressBlog
+
 
 class GetAuthors(AuthenticatedMethod):
-	"""
-	Retrieve list of authors in the blog.
+    """
+    Retrieve list of authors in the blog.
 
-	Parameters:
-		None
+    Parameters:
+        None
 
-	Returns: `list` of `WordPressAuthor` instances.
-	"""
-	method_name = 'wp.getAuthors'
-	results_class = WordPressAuthor
+    Returns: `list` of `WordPressAuthor` instances.
+    """
+    method_name = 'wp.getAuthors'
+    results_class = WordPressAuthor
