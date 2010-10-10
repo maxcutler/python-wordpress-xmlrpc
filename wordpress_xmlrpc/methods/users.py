@@ -1,10 +1,11 @@
 from wordpress_xmlrpc.base import *
 from wordpress_xmlrpc.mixins import *
-from wordpress_xmlrpc.wordpress import WordPressBlog, WordPressAuthor
+from wordpress_xmlrpc.wordpress import WordPressBlog, WordPressAuthor, WordPressUser
 
 class GetUserInfo(BloggerApiMethodMixin, AuthenticatedMethod):
 	method_name = 'blogger.getUserInfo'
 	requires_blog = False
+	results_class = WordPressUser
 
 class GetUsersBlogs(AuthenticatedMethod):
 	method_name = 'wp.getUsersBlogs'

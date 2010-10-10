@@ -100,3 +100,21 @@ class WordPressAuthor(object):
 
 	def __str__(self):
 		return self.display_name
+
+class WordPressUser(object):
+	user_id = None
+	nickname = ''
+	url = ''
+	first_name = ''
+	last_name = ''
+
+	def __init__(self, xmlrpc=None):
+		if xmlrpc:
+			self.user_id = xmlrpc['userid']
+			self.nickname = xmlrpc['nickname']
+			self.url = xmlrpc['url']
+			self.first_name = xmlrpc['firstname']
+			self.last_name = xmlrpc['lastname']
+
+	def __str__(self):
+		return self.nickname
