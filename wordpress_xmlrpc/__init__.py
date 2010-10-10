@@ -1,14 +1,8 @@
-#!/usr/bin/python
+"""
+Library to interface with the WordPress XML-RPC API.
 
-import xmlrpclib
-import urllib
-
+See README for usage instructions.
+"""
 from base import *
 from wordpress import *
 import methods
-
-def main():
-    pass
-
-if __name__ == '__main__':
-    main()
