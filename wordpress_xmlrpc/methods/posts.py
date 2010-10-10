@@ -34,3 +34,7 @@ class GetPostStatusList(AuthenticatedMethod):
 class GetRecentPostTitles(AuthenticatedMethod):
     method_name = 'mt.getRecentPostTitles'
     method_args = ('num_posts',)
+
+class PublishPost(AuthParamsOffsetMixin, AuthenticatedMethod):
+    method_name = 'mt.publishPost'
+    method_args = ('post_id',)
