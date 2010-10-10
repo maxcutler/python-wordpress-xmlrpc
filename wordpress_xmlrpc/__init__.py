@@ -98,6 +98,7 @@ class Client(object):
 class XmlrpcMethod(object):
     method_name = None
     method_args = None
+    args_start_position = 0
     default_args_position = 0
 
     def __init__(self, *args):
@@ -116,9 +117,11 @@ class XmlrpcMethod(object):
 
         if self.method_args:
             args = tuple(getattr(self, arg) for arg in self.method_args)
-            return args[:self.default_args_position] + default_args + args[self.default_args_position:]
+            args = args[:self.default_args_position] + default_args + args[self.default_args_position:]
         else:
-            return default_args
+            args = default_args
+
+        return ((0,)*self.args_start_position) + args
 
     def process_result(self, raw_result):
         return raw_result
@@ -134,6 +137,9 @@ class AuthenticatedMethod(XmlrpcMethod):
             return (client.blog_id, client.username, client.password)
         else:
             return (client.username, client.password)
+
+class ArgsOffsetByOneMixin(object):
+    args_start_position = 1
 
 class AuthParamsOffsetMixin(object):
     requires_blog = False
@@ -167,6 +173,10 @@ class NewPost(AuthenticatedMethod):
 class EditPost(AuthParamsOffsetMixin, AuthenticatedMethod):
     method_name = 'metaWeblog.editPost'
     method_args = ('post_id', 'content', 'publish')
+
+class DeletePost(ArgsOffsetByOneMixin, AuthParamsOffsetMixin, AuthenticatedMethod):
+    method_name = 'blogger.deletePost'
+    method_args = ('post_id', )
 
 def main():
     pass
