@@ -12,3 +12,6 @@ class GetOptions(AuthenticatedMethod):
 			value['name'] = key
 			options.append(WordPressOption(value))
 		return options
+
+class SetOptions(GetOptions):
+	method_name = 'wp.setOptions'
