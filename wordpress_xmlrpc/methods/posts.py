@@ -34,3 +34,7 @@ class GetRecentPostTitles(AuthenticatedMethod):
 class PublishPost(AuthParamsOffsetMixin, AuthenticatedMethod):
     method_name = 'mt.publishPost'
     method_args = ('post_id',)
+
+class UploadFile(AuthenticatedMethod):
+    method_name = 'wp.uploadFile'
+    method_args = ('data',)
