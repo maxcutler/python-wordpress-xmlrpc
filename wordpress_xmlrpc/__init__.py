@@ -5,7 +5,7 @@ import urllib
 
 from base import *
 from wordpress import *
-from methods import *
+import methods
 
 def main():
     pass

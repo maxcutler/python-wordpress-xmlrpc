@@ -1,13 +1,6 @@
-from base import *
-from mixins import *
-from wordpress import *
-
-class SayHello(AnonymousMethod):
-    method_name = 'demo.sayHello'
-
-class AddTwoNumbers(AnonymousMethod):
-    method_name = 'demo.addTwoNumbers'
-    method_args = ('number1', 'number2')
+from wordpress_xmlrpc.base import *
+from wordpress_xmlrpc.mixins import *
+from wordpress_xmlrpc.wordpress import *
 
 class GetRecentPosts(AuthenticatedMethod):
     method_name = 'metaWeblog.getRecentPosts'
