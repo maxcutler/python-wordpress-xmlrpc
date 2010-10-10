@@ -1,4 +1,5 @@
 import xmlrpclib
+import collections, types
 
 class Client(object):
     def __init__(self, url, username, password, blog_id=0):
@@ -27,6 +28,7 @@ class XmlrpcMethod(object):
     method_args = None
     args_start_position = 0
     default_args_position = 0
+    results_class = None
 
     def __init__(self, *args):
         if self.method_args:
@@ -51,6 +53,12 @@ class XmlrpcMethod(object):
         return ((0,)*self.args_start_position) + args
 
     def process_result(self, raw_result):
+        if self.results_class and raw_result:
+            if isinstance(raw_result, types.DictType):
+                return self.results_class(raw_result)
+            elif isinstance(raw_result, collections.Iterable):
+                return [self.results_class(result) for result in raw_result]
+
         return raw_result
 
 class AnonymousMethod(XmlrpcMethod):

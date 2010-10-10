@@ -5,16 +5,12 @@ from wordpress_xmlrpc.wordpress import WordPressPost
 class GetRecentPosts(AuthenticatedMethod):
     method_name = 'metaWeblog.getRecentPosts'
     method_args = ('num_posts',)
-
-    def process_result(self, post_list):
-        return [WordPressPost(post) for post in post_list]
+    results_class = WordPressPost
 
 class GetPost(AuthParamsOffsetMixin, AuthenticatedMethod):
     method_name = 'metaWeblog.getPost'
     method_args = ('post_id',)
-
-    def process_result(self, raw_post):
-        return WordPressPost(raw_post)
+    results_class = WordPressPost
 
 class NewPost(AuthenticatedMethod):
     method_name = 'metaWeblog.newPost'

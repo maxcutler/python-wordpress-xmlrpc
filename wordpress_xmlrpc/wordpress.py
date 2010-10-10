@@ -86,3 +86,17 @@ class WordPressBlog(object):
 
 	def __str__(self):
 		return self.name
+
+class WordPressAuthor(object):
+	user_id = None
+	user_login = ''
+	display_name = ''
+
+	def __init__(self, xmlrpc=None):
+		if xmlrpc:
+			self.user_id = xmlrpc['user_id']
+			self.user_login = xmlrpc['user_login']
+			self.display_name = xmlrpc['display_name']
+
+	def __str__(self):
+		return self.display_name
