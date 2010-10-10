@@ -159,3 +159,23 @@ class WordPressCategory(WordPressBase):
 
 	def __str__(self):
 		return self.name
+
+class WordPressTag(WordPressBase):
+	tag_id = None
+	name = ''
+	count = 0
+	slug = ''
+	url = ''
+	rss = ''
+
+	def __init__(self, xmlrpc=None):
+		if xmlrpc:
+			self.tag_id = xmlrpc['tag_id']
+			self.name = xmlrpc['name']
+			self.count = xmlrpc['count']
+			self.slug = xmlrpc['slug']
+			self.url = xmlrpc['html_url']
+			self.rss = xmlrpc['rss_url']
+
+	def __str__(self):
+		return self.name

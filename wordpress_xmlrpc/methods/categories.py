@@ -1,6 +1,6 @@
 from wordpress_xmlrpc.base import *
 from wordpress_xmlrpc.mixins import *
-from wordpress_xmlrpc.wordpress import WordPressCategory
+from wordpress_xmlrpc.wordpress import WordPressCategory, WordPressTag
 
 class GetCategories(AuthenticatedMethod):
 	method_name = 'wp.getCategories'
@@ -26,3 +26,7 @@ class GetPostCategories(AuthParamsOffsetMixin, AuthenticatedMethod):
 class SetPostCategories(AuthParamsOffsetMixin, AuthenticatedMethod):
 	method_name = 'mt.setPostCategories'
 	method_args = ('post_id', 'categories',)
+
+class GetTags(AuthenticatedMethod):
+	method_name = 'wp.getTags'
+	results_class = WordPressTag
