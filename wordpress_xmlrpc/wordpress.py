@@ -68,3 +68,21 @@ class WordPressPost(object):
 
     def __str__(self):
         return '%s (id=%s)' % (self.slug, self.id)
+
+class WordPressBlog(object):
+	id = None
+	name = None
+	url = ''
+	xmlrpc = ''
+	is_admin = False
+
+	def __init__(self, xmlrpc=None):
+		if xmlrpc:
+			self.id = xmlrpc['blogid']
+			self.name = xmlrpc['blogName']
+			self.url = xmlrpc['url']
+			self.xmlrpc = xmlrpc['xmlrpc']
+			self.is_admin = xmlrpc['isAdmin']
+
+	def __str__(self):
+		return self.name
