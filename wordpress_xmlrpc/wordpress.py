@@ -179,3 +179,19 @@ class WordPressTag(WordPressBase):
 
 	def __str__(self):
 		return self.name
+
+class WordPressOption(WordPressBase):
+	name = ''
+	description = ''
+	value = None
+	read_only = False
+
+	def __init__(self, xmlrpc=None):
+		if xmlrpc:
+			self.name = xmlrpc['name']
+			self.description = xmlrpc['desc']
+			self.value = xmlrpc['value']
+			self.read_only = xmlrpc['readonly']
+
+	def __str__(self):
+		return '%s="%s"' % (self.name, self.value)
