@@ -7,13 +7,6 @@ class Client(object):
 
 	To execute XML-RPC methods, pass an instance of an
 	`XmlrpcMethod`-derived class to `Client`'s `call` method.
-
-	Example:
-		from wordpress_xmlrpc import Client
-		from wordpress_xmlrpc.methods.users import GetUserInfo
-
-		wp = Client('http://mysite.wordpress.com/xmlrpc.php', 'username', 'password')
-		info = wp.call(GetUserInfo())
 	"""
 	def __init__(self, url, username, password, blog_id=0):
 		self.url = url
