@@ -1,6 +1,10 @@
 import xmlrpclib
 
-class WordPressPost(object):
+class WordPressBase(object):
+	def __repr__(self):
+		return '<%s: %s>' % (self.__class__.__name__, str(self))
+
+class WordPressPost(WordPressBase):
     def __init__(self, xmlrpc=None):
         if xmlrpc:
             self.id = xmlrpc['postid']
@@ -69,7 +73,7 @@ class WordPressPost(object):
     def __str__(self):
         return '%s (id=%s)' % (self.slug, self.id)
 
-class WordPressBlog(object):
+class WordPressBlog(WordPressBase):
 	id = None
 	name = None
 	url = ''
@@ -87,7 +91,7 @@ class WordPressBlog(object):
 	def __str__(self):
 		return self.name
 
-class WordPressAuthor(object):
+class WordPressAuthor(WordPressBase):
 	user_id = None
 	user_login = ''
 	display_name = ''
@@ -101,7 +105,7 @@ class WordPressAuthor(object):
 	def __str__(self):
 		return self.display_name
 
-class WordPressUser(object):
+class WordPressUser(WordPressBase):
 	user_id = None
 	nickname = ''
 	url = ''
@@ -118,3 +122,23 @@ class WordPressUser(object):
 
 	def __str__(self):
 		return self.nickname
+
+class WordPressCategory(WordPressBase):
+	cat_id = None
+	parent_id = None
+	name = ''
+	description = ''
+	url = ''
+	rss = ''
+
+	def __init__(self, xmlrpc=None):
+		if xmlrpc:
+			self.cat_id = xmlrpc['categoryId']
+			self.parent_id = xmlrpc['parentId']
+			self.name = xmlrpc['categoryName']
+			self.description = xmlrpc['categoryDescription']
+			self.url = xmlrpc['htmlUrl']
+			self.rss = xmlrpc['rssUrl']
+
+	def __str__(self):
+		return self.name
