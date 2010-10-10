@@ -146,6 +146,9 @@ class WordPressCategory(WordPressBase):
 			'name': self.name,
 		}
 
+		if self.cat_id:
+			struct['categoryId'] = self.cat_id
+
 		if self.parent_id:
 			struct['parent_id'] = self.parent_id
 

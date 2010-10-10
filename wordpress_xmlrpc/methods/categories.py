@@ -22,3 +22,7 @@ class GetPostCategories(AuthParamsOffsetMixin, AuthenticatedMethod):
 	method_name = 'mt.getPostCategories'
 	method_args = ('post_id',)
 	results_class = WordPressCategory
+
+class SetPostCategories(AuthParamsOffsetMixin, AuthenticatedMethod):
+	method_name = 'mt.setPostCategories'
+	method_args = ('post_id', 'categories',)
