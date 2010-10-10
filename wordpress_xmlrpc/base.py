@@ -9,17 +9,13 @@ class Client(object):
         self.blog_id = blog_id
 
         self.server = xmlrpclib.ServerProxy(url, use_datetime=True)
-
-    def supported_methods(self):
-        """
-        Retrieve list of supported XML-RPC methods.
-        """
-        return self.server.mt.supportedMethods()
+        self.supported_methods = self.server.mt.supportedMethods()
 
     def call(self, method):
+        assert (method.method_name in self.supported_methods)
         server_method = getattr(self.server, method.method_name)
         args = method.get_args(self)
-        print method.method_name, args
+        # print method.method_name, args
         raw_result = server_method(*args)
         return method.process_result(raw_result)
 
