@@ -27,3 +27,6 @@ class EditPost(AuthParamsOffsetMixin, AuthenticatedMethod):
 class DeletePost(BloggerApiMethodMixin, AuthParamsOffsetMixin, AuthenticatedMethod):
     method_name = 'blogger.deletePost'
     method_args = ('post_id', )
+
+class GetPostStatusList(AuthenticatedMethod):
+    method_name = 'wp.getPostStatusList'
