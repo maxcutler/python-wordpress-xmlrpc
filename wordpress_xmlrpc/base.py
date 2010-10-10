@@ -44,7 +44,7 @@ class XmlrpcMethod(object):
     def __init__(self, *args):
         if self.method_args:
             if len(args) != len(self.method_args):
-                raise Exception, "Invalid number of parameters to %s" % self.method_name
+                raise ValueError("Invalid number of parameters to %s" % self.method_name)
 
             for i, arg_name in enumerate(self.method_args):
                 setattr(self, arg_name, args[i])
