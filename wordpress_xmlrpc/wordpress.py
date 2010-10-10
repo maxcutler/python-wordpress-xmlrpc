@@ -140,5 +140,19 @@ class WordPressCategory(WordPressBase):
 			self.url = xmlrpc['htmlUrl']
 			self.rss = xmlrpc['rssUrl']
 
+	@property
+	def content_struct(self):
+		struct = {
+			'name': self.name,
+		}
+
+		if self.parent_id:
+			struct['parent_id'] = self.parent_id
+
+		if self.description:
+			struct['description'] = self.description
+
+		return struct
+
 	def __str__(self):
 		return self.name
