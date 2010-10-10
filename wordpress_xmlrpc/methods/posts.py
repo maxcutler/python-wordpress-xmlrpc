@@ -30,3 +30,7 @@ class DeletePost(BloggerApiMethodMixin, AuthParamsOffsetMixin, AuthenticatedMeth
 
 class GetPostStatusList(AuthenticatedMethod):
     method_name = 'wp.getPostStatusList'
+
+class GetRecentPostTitles(AuthenticatedMethod):
+    method_name = 'mt.getRecentPostTitles'
+    method_args = ('num_posts',)
