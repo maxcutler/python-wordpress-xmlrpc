@@ -11,6 +11,10 @@ A set of classes are provided that wrap the standard WordPress data
 types (e.g., Blog, Post, User). The provided method implementations
 return these objects when possible.
 
+NOTE: The XML-RPC API is disabled in WordPress by default. To enable,
+go to Settings->Writing->Remote Publishing and check the box for
+XML-RPC. This library has been developed against and tested on Wordpress 3.0.
+
 Usage
 ==========
 
@@ -69,6 +73,9 @@ Available classes:
 
 XML-RPC Methods
 ----------
+
+See files in the `methods` folder for details on exact
+method parameters and return values.
 
 ### methods.posts
 
