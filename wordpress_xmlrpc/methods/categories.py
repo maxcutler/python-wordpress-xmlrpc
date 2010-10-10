@@ -9,3 +9,7 @@ class GetCategories(AuthenticatedMethod):
 class NewCategory(AuthenticatedMethod):
 	method_name = 'wp.newCategory'
 	method_args = ('category',)
+
+class DeleteCategory(AuthenticatedMethod):
+	method_name = 'wp.deleteCategory'
+	method_args = ('category_id',)
