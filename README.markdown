@@ -54,14 +54,19 @@ a parameter, be sure to use `obj.struct` or else WordPress will not receive
 data in the format it expects.
 
 	>>> from wordpress_xmlrpc import Client, WordPressCategory
-	>>> from wordpress_xmlrpc.categories import SetPostCategories
+	>>> from wordpress_xmlrpc.categories import NewCategory, SetPostCategories
 
 	>>> wp = Client('http://mysite.wordpress.com/xmlrpc.php', 'username', 'password')
 	>>> new_category = WordPressCategory()
 	>>> new_category.name = 'My new category'
+	>>> new_category.cat_id = c.call(NewCategory(new_category))
+
 	>>> another_category = WordPressCategory()
 	>>> another_category.name = 'Another new category'
+	>>> another_category.cat_id = c.call(NewCategory(another_category))
+
 	>>> wp.call(SetPostCategories(5, [new_category.struct, another_category.struct]))
+	True
 
 Custom XML-RPC Methods
 ==========
