@@ -25,15 +25,43 @@ WordPress XML-RPC endpoint and user credentials. Then pass an
 `XmlrpcMethod` object into its `call` method to execute the
 remote call and return the result.
 
-	>>> from wordpress_xmlrpc import Client
-	>>> from wordpress_xmlrpc.methods.posts import GetRecentPosts
+	>>> from wordpress_xmlrpc import Client, WordPressPost
+	>>> from wordpress_xmlrpc.methods.posts import GetRecentPosts, NewPost
 	>>> from wordpress_xmlrpc.methods.users import GetUserInfo
 
 	>>> wp = Client('http://mysite.wordpress.com/xmlrpc.php', 'username', 'password')
 	>>> wp.call(GetRecentPosts(10))
 	[<WordPressPost: hello-world (id=1)>]
+
 	>>> wp.call(GetUserInfo())
 	<WordPressUser: max>
+
+	>>> post = WordPressPost()
+	>>> post.title = 'My new title'
+	>>> post.description = 'This is the body of my new post.'
+	>>> post.tags = 'test, firstpost'
+	>>> post.categories = ['Introductions', 'Tests']
+	>>> wp.call(NewPost(post, True))
+	5
+
+Notice that properties of `WordPress` objects are accessed directly,
+and not through the `definition` attribute defined in the source code.
+
+When a `WordPress` object is used as a method parameter, its `struct`
+parameter is automatically extracted for consumption by XML-RPC. However,
+if you use an object in a list of other embedded data structure used as
+a parameter, be sure to use `obj.struct` or else WordPress will not receive
+data in the format it expects.
+
+	>>> from wordpress_xmlrpc import Client, WordPressCategory
+	>>> from wordpress_xmlrpc.categories import SetPostCategories
+
+	>>> wp = Client('http://mysite.wordpress.com/xmlrpc.php', 'username', 'password')
+	>>> new_category = WordPressCategory()
+	>>> new_category.name = 'My new category'
+	>>> another_category = WordPressCategory()
+	>>> another_category.name = 'Another new category'
+	>>> wp.call(SetPostCategories(5, [new_category.struct, another_category.struct]))
 
 Custom XML-RPC Methods
 ==========
