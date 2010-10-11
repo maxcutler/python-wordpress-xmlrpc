@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(name='wordpress_xmlrpc',
-      version='1.0',
+      version='1.1',
       description='WordPress XML-RPC API Integration Library',
       author='Max Cutler',
       author_email='max@maxcutler.com',
