@@ -17,14 +17,13 @@ class Client(object):
         self.password = password
         self.blog_id = blog_id
 
-        self.server = xmlrpclib.ServerProxy(url, use_datetime=True)
+        self.server = xmlrpclib.ServerProxy(url, use_datetime=True, allow_none=True)
         self.supported_methods = self.server.mt.supportedMethods()
 
     def call(self, method):
         assert (method.method_name in self.supported_methods)
         server_method = getattr(self.server, method.method_name)
         args = method.get_args(self)
-        # print method.method_name, args
         raw_result = server_method(*args)
         return method.process_result(raw_result)
 
@@ -76,12 +75,18 @@ class XmlrpcMethod(object):
         default_args = self.default_args(client)
 
         if self.method_args:
-            args = tuple(getattr(self, arg) for arg in self.method_args)
-            args = args[:self.default_args_position] + default_args + args[self.default_args_position:]
+            args = []
+            for arg in self.method_args:
+                obj = getattr(self, arg)
+                if hasattr(obj, 'struct'):
+                    args.append(obj.struct)
+                else:
+                    args.append(obj)
+            args = args[:self.default_args_position] + list(default_args) + args[self.default_args_position:]
         else:
             args = default_args
 
-        return ((0,) * self.args_start_position) + args
+        return ((0,) * self.args_start_position) + tuple(args)
 
     def process_result(self, raw_result):
         """

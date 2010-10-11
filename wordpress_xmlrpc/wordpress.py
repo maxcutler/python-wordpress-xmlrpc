@@ -34,9 +34,11 @@ class WordPressBase(object):
                 else:
                     self._def[key] = FieldMap(value)
 
-        if xmlrpc and self._def:
-            for var, fmap in self._def.items():
-                setattr(self, var, xmlrpc.get(fmap.name, fmap.default))
+                fmap = self._def[key]
+                if xmlrpc:
+                    setattr(self, key, xmlrpc.get(fmap.name, fmap.default))
+                elif fmap.default:
+                    setattr(self, key, fmap.default)
 
     @property
     def struct(self):
@@ -48,6 +50,7 @@ class WordPressBase(object):
                         data[output] = fmap.conversion(getattr(self, var))
                     else:
                         data[output] = getattr(self, var)
+        print data
         return data
 
     def __repr__(self):
@@ -76,7 +79,7 @@ class WordPressPost(WordPressBase):
     }
 
     def __str__(self):
-        return '%s (id=%s)' % (self.slug, self.id)
+        return self.title
 
 
 class WordPressBlog(WordPressBase):
