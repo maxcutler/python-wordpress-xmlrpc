@@ -16,6 +16,7 @@ go to Settings->Writing->Remote Publishing and check the box for
 XML-RPC.
 
 This library was developed against and tested on WordPress 3.0.
+This library is only compatible with Python 2.x.
 
 Usage
 ==========
