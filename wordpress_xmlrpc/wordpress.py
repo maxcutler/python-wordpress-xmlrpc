@@ -50,7 +50,6 @@ class WordPressBase(object):
                         data[output] = fmap.conversion(getattr(self, var))
                     else:
                         data[output] = getattr(self, var)
-        print data
         return data
 
     def __repr__(self):
