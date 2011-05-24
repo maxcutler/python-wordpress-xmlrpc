@@ -2,7 +2,7 @@ from wordpress_xmlrpc.base import *
 from wordpress_xmlrpc.mixins import *
 from wordpress_xmlrpc.wordpress import WordPressComment
 
-class GetComment(AuthenticatedMethod):
+class GetComment(AuthParamsOffsetMixin, AuthenticatedMethod):
     """
     Retreive an individual comment.
 
@@ -13,10 +13,10 @@ class GetComment(AuthenticatedMethod):
     Returns: `WordPressPost` instance.
     """
     method_name = 'wp.getComment'
-    method_args = ('post_id', )
+    method_args = ('blog_id', 'post_id', )
     results_class = WordPressComment
 
-class NewComment(AuthenticatedMethod):
+class NewComment(AuthParamsOffsetMixin, AuthenticatedMethod):
     """
     Create a new comment
 
@@ -25,5 +25,5 @@ class NewComment(AuthenticatedMethod):
 
     Returns: ID of the newly-created comment (an integer).
     """
-    method_name = 'metaWeblog.newPost'
-    method_args = ('comment', )
+    method_name = 'wp.newComment'
+    method_args = ('blog_id', 'post_id', 'comment', )

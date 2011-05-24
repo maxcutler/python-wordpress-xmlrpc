@@ -86,7 +86,7 @@ class WordPressComment(WordPressBase):
         'user': 'user_id',
         'post': 'post_id',
         'post_title': 'post_title',
-        'parent': 'parent',
+        'parent': 'comment_parent',
         'date_created': FieldMap('dateCreated', conversion=xmlrpclib.DateTime),
         'status': 'status',
         'content': 'content',
