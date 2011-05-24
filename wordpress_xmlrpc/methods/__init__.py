@@ -6,3 +6,4 @@ import demo
 import users
 import categories
 import options
+import comments

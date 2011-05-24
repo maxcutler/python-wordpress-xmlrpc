@@ -80,6 +80,25 @@ class WordPressPost(WordPressBase):
     def __str__(self):
         return self.title
 
+class WordPressComment(WordPressBase):
+    definition = {
+        'id': 'comment_id',
+        'user': 'user_id',
+        'post': 'post_id',
+        'post_title': 'post_title',
+        'parent': 'parent',
+        'date_created': FieldMap('dateCreated', conversion=xmlrpclib.DateTime),
+        'status': 'status',
+        'content': 'content',
+        'link': 'link',
+        'author': 'author',
+        'author_url': 'author_url',
+        'author_email': 'author_email',
+        'author_ip': 'author_ip'
+    }
+
+    def __str__(self):
+        return self.content
 
 class WordPressBlog(WordPressBase):
     definition = {
