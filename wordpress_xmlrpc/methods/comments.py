@@ -46,7 +46,7 @@ class DeleteComment(AuthenticatedMethod):
     Edit an existing comment
 
     Parameters:
-        `comment`: The id of the comment to be deleted.
+        `comment_id`: The id of the comment to be deleted.
 
     Returns: ID of the newly-created comment (an integer).
     """
