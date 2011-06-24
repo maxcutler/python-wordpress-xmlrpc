@@ -70,7 +70,7 @@ data in the format it expects.
 	True
 
 Custom XML-RPC Methods
-==========
+======================
 
 To interface with a non-standard XML-RPC method (such as one added
 by a plugin), you must simply extend `wordpress_xmlrpc.XmlrpcMethod`
@@ -93,7 +93,7 @@ Reference
 ==========
 
 WordPress Classes
-----------
+-----------------
 
 See `wordpress.py` for full details.
 
@@ -124,6 +124,19 @@ method parameters and return values.
 * GetPostStatusList()
 * PublishPost(post_id)
 * UploadFile(data)
+
+### methods.pages
+
+* GetPage(blog_id, page_id)
+* GetPages(blog_id, page_id)
+* NewPage(content, publish) # NOTE: WP doesn't have blog_id support in this
+                            # call yet, so neither do we...
+* DeletePage(blog_id, page_id)
+* EditPage(blog_id, page_id, content, publish)
+* GetPageList
+* GetPageStatusList
+* GetPageTemplates
+
 
 ### methods.categories
 
@@ -160,5 +173,4 @@ method parameters and return values.
 
 ### To Be Implemented
 
-* methods.pages
 * methods.pingbacks

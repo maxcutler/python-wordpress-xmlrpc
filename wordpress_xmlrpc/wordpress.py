@@ -80,6 +80,16 @@ class WordPressPost(WordPressBase):
     def __str__(self):
         return self.title
 
+class WordPressPage(WordPressPost):
+    """
+    A WordPressPage is only different from a post in the post_type.
+    """
+    def __init__(self, xmlrpc=None):
+        if self.definition:
+            # Only override the post_type, that's all that's different!
+            self.definition['post_type'] = FieldMap('post_type', default='page')
+        super(WordPressPage,self).__init__(xmlrpc)
+
 class WordPressComment(WordPressBase):
     definition = {
         'id': 'comment_id',
