@@ -54,4 +54,55 @@ class DeleteComment(AuthenticatedMethod):
     Returns: `True` on successful deletion.
     """
     method_name = 'wp.deleteComment'
-    method_args = ('comment_id', )
+    method_args = ('comment_id',)
+
+
+class GetCommentStatusList(AuthenticatedMethod):
+    """
+    Retrieve the set of possible blog comment statuses (e.g., "approve," "hold," "spam").
+
+    Parameters:
+        None
+
+    Returns: `dict` of values and their pretty names.
+
+    Example:
+        >>> client.call(GetCommentStatusList())
+        {'hold': 'Unapproved', 'approve': 'Approved', 'spam': 'Spam'}
+    """
+    method_name = 'wp.getCommentStatusList'
+
+
+class GetCommentCount(AuthenticatedMethod):
+    """
+    Retrieve comment count for a specific post.
+
+    Parameters:
+        `post_id`: The id of the post to retrieve comment count for.
+
+    Returns: `dict` of comment counts for the post divided by comment status.
+
+    Example:
+        >>> client.call(GetCommentCount(1))
+        {'awaiting_moderation': '2', 'total_comments': 23, 'approved': '18', 'spam': 3}
+    """
+    method_name = 'wp.getCommentCount'
+    method_args = ('post_id',)
+
+
+class GetComments(AuthenticatedMethod):
+    """
+    Gets a set of comments for a post.
+
+    Parameters:
+        `struct`: a `dict` with the following values:
+            `post_id`: the id of the post to retrieve comments for
+            `status`: type of comments of comments to retrieve (optional, defaults to 'approve')
+            `number`: number of comments to retrieve (optional, defaults to 10)
+            `offset`: retrieval offset (optional, defaults to 0)
+
+    Returns: `list` of `WordPressComment` instances.
+    """
+    method_name = 'wp.getComments'
+    method_args = ('struct',)
+    results_class = WordPressComment

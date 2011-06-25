@@ -104,6 +104,7 @@ Available classes:
 * WordPressAuthor
 * WordPressUser
 * WordPressCategory
+* WordPressComment
 * WordPressTag
 * WordPressOption
 
@@ -134,6 +135,16 @@ method parameters and return values.
 * SetPostCategories(post_id, categories)
 * GetTags()
 
+### methods.comments
+
+* GetComment(comment_id)
+* NewComment(post_id, comment)
+* EditComment(comment_id, comment)
+* DeleteComment(comment_id)
+* GetCommentStatusList()
+* GetCommentCount(post_id)
+* GetComments(struct)
+
 ### methods.users
 
 * GetUserInfo()
@@ -153,5 +164,4 @@ method parameters and return values.
 ### To Be Implemented
 
 * methods.pages
-* methods.comments
 * methods.pingbacks
