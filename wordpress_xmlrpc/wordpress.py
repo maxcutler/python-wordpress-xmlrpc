@@ -80,6 +80,7 @@ class WordPressPost(WordPressBase):
     def __str__(self):
         return self.title
 
+
 class WordPressComment(WordPressBase):
     definition = {
         'id': 'comment_id',
@@ -94,11 +95,12 @@ class WordPressComment(WordPressBase):
         'author': 'author',
         'author_url': 'author_url',
         'author_email': 'author_email',
-        'author_ip': 'author_ip'
+        'author_ip': 'author_ip',
     }
 
     def __str__(self):
         return self.content
+
 
 class WordPressBlog(WordPressBase):
     definition = {
