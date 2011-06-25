@@ -1,6 +1,7 @@
 import xmlrpclib
 import collections
 import types
+from wordpress_xmlrpc.xmlrpc import GAEXMLRPCTransport
 
 
 class Client(object):
@@ -11,13 +12,21 @@ class Client(object):
     `XmlrpcMethod`-derived class to `Client`'s `call` method.
     """
 
-    def __init__(self, url, username, password, blog_id=0):
+    def __init__(self, url, username, password, blog_id=0, appengine_mode=False):
         self.url = url
         self.username = username
         self.password = password
         self.blog_id = blog_id
-
-        self.server = xmlrpclib.ServerProxy(url, use_datetime=True, allow_none=True)
+        if not appengine_mode:
+            self.server = xmlrpclib.ServerProxy(url, use_datetime=True, allow_none=True)
+        else:
+            import urllib
+            type, uri = urllib.splittype(url)
+            self.server = xmlrpclib.ServerProxy(url, 
+                                                use_datetime=True, 
+                                                allow_none=True, 
+                                                transport=GAEXMLRPCTransport(protocol=type, 
+                                                                             use_datetime=True))
         self.supported_methods = self.server.mt.supportedMethods()
 
     def call(self, method):

@@ -1,0 +1,14 @@
+# use glob syntax.
+syntax: glob
+
+*.settings
+*.DS_Store
+*.elc
+*.pyc
+*.tmp_*
+org.eclipse.*
+project/var*
+project/eggs*
+project/docs*
+docs*
+
