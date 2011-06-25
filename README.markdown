@@ -60,17 +60,17 @@ data in the format it expects.
 	>>> wp = Client('http://mysite.wordpress.com/xmlrpc.php', 'username', 'password')
 	>>> new_category = WordPressCategory()
 	>>> new_category.name = 'My new category'
-	>>> new_category.cat_id = c.call(NewCategory(new_category))
+	>>> new_category.cat_id = wp.call(NewCategory(new_category))
 
 	>>> another_category = WordPressCategory()
 	>>> another_category.name = 'Another new category'
-	>>> another_category.cat_id = c.call(NewCategory(another_category))
+	>>> another_category.cat_id = wp.call(NewCategory(another_category))
 
 	>>> wp.call(SetPostCategories(5, [new_category.struct, another_category.struct]))
 	True
 
 Custom XML-RPC Methods
-==========
+======================
 
 To interface with a non-standard XML-RPC method (such as one added
 by a plugin), you must simply extend `wordpress_xmlrpc.XmlrpcMethod`
@@ -93,7 +93,7 @@ Reference
 ==========
 
 WordPress Classes
-----------
+-----------------
 
 See `wordpress.py` for full details.
 
@@ -104,6 +104,7 @@ Available classes:
 * WordPressAuthor
 * WordPressUser
 * WordPressCategory
+* WordPressComment
 * WordPressTag
 * WordPressOption
 
@@ -124,6 +125,19 @@ method parameters and return values.
 * PublishPost(post_id)
 * UploadFile(data)
 
+### methods.pages
+
+* GetPage(blog_id, page_id)
+* GetPages(blog_id, page_id)
+* NewPage(content, publish) # NOTE: WP doesn't have blog_id support in this
+                            # call yet, so neither do we...
+* DeletePage(blog_id, page_id)
+* EditPage(blog_id, page_id, content, publish)
+* GetPageList
+* GetPageStatusList
+* GetPageTemplates
+
+
 ### methods.categories
 
 * GetCategories()
@@ -133,6 +147,13 @@ method parameters and return values.
 * GetPostCategories(post_id)
 * SetPostCategories(post_id, categories)
 * GetTags()
+
+### methods.comments
+
+* GetComment(comment_id)
+* NewComment(post_id, comment_id)
+* EditComment(comment_id, comment)
+* DeleteComment(comment_id)
 
 ### methods.users
 
@@ -152,6 +173,4 @@ method parameters and return values.
 
 ### To Be Implemented
 
-* methods.pages
-* methods.comments
 * methods.pingbacks

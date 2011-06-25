@@ -45,6 +45,7 @@ class NewPost(AuthenticatedMethod):
     method_args = ('content', 'publish')
 
 
+
 class EditPost(AuthParamsOffsetMixin, AuthenticatedMethod):
     """
     Edit an existing blog post.

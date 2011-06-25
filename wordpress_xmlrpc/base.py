@@ -28,6 +28,7 @@ class Client(object):
         return method.process_result(raw_result)
 
 
+
 class XmlrpcMethod(object):
     """
     Base class for XML-RPC methods.

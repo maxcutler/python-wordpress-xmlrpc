@@ -1,1 +1,12 @@
+.DS_Store
+*.settings
+*.elc
 *.pyc
+*.swp
+*.tmp_*
+org.eclipse.*
+project/var*
+project/eggs*
+project/docs*
+*.egg-info
+
