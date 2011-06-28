@@ -53,7 +53,7 @@ class WordPressBase(object):
         return data
 
     def __repr__(self):
-        return '<%s: %s>' % (self.__class__.__name__, str(self))
+        return '<%s: %s>' % (self.__class__.__name__, unicode(self).encode('utf-8'))
 
 
 class WordPressPost(WordPressBase):
