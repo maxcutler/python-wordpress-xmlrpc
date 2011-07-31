@@ -75,6 +75,7 @@ class WordPressPost(WordPressBase):
         'categories': 'categories',
         'custom_fields': 'custom_fields',
         'post_type': FieldMap('post_type', default='post'),
+        'password': 'wp_password',
     }
 
     def __str__(self):
@@ -104,6 +105,7 @@ class WordPressPage(WordPressBase):
         'parent_id': FieldMap('wp_page_parent_id', conversion=int),
         'parent_title': 'wp_page_parent_title',
         'order': FieldMap('wp_page_order', conversion=int),
+        'password': 'wp_password',
     }
 
     def __str__(self):
