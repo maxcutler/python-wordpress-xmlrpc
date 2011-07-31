@@ -26,5 +26,7 @@ setup(name='python-wordpress-xmlrpc',
           'Topic :: Internet :: WWW/HTTP :: Site Management',
           'Topic :: Utilities',
           'Natural Language :: English',
-      ]
-     )
+      ],
+      include_package_data=True,
+      long_description=open('README.rst').read(),
+)
