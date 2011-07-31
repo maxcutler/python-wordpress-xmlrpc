@@ -165,3 +165,63 @@ method parameters and return values.
 
 * methods.pages
 * methods.pingbacks
+
+Running Tests
+==========
+
+Requirements
+----------
+
+`nose` is used as the test runner, and [nose-testconfig](http://pypi.python.org/pypi/nose-testconfig/)
+for specifying configuration values. To install:
+
+	easy_install nose
+	easy_install nose-testconfig
+
+Configuring against your server
+----------
+
+To test this library, we must perform XML-RPC requests against an
+actual WordPress server. To configure against your own server:
+
+* Copy the included `wp-config-sample.cfg` file to `wp-config.cfg`.
+* Edit `wp-config.cfg` and fill in the necessary values.
+
+Running Tests
+----------
+
+Note: Be sure to have installed `nose` and created your `wp-config.cfg`.
+
+To run the entire test suite, run the following from the root of the repository:
+
+	nosetests
+
+To run a sub-set of the tests, you can specify a specific feature area:
+
+	nosetests -a posts
+
+You can run against multiple areas:
+
+	nosetests -a posts -a comments
+
+Or you can run everything except a specific area:
+
+	nosetests -a '!comments'
+
+You can use all the normal `nose` command line options. For example, to increase output level:
+
+	nosetests -a demo --verbosity=3
+
+Full usage details:
+
+* [nose](http://readthedocs.org/docs/nose/en/latest/usage.html)
+* [nose-testconfig](http://pypi.python.org/pypi/nose-testconfig/#command-line-options)
+
+Contributing Tests
+----------
+
+If you are submitting a patch for this library, please be sure to include
+one or more tests that cover the changes.
+
+if you are adding new test methods, be sure to tag them with the appropriate
+feature areas using the `@attr()` decorator.

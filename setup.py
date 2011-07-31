@@ -13,4 +13,5 @@ setup(name='wordpress_xmlrpc',
       url='https://github.com/maxcutler/python-wordpress-xmlrpc/',
       packages=['wordpress_xmlrpc', 'wordpress_xmlrpc.methods'],
       license='BSD',
+      test_suite='nose.collector',
      )
