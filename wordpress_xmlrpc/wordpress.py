@@ -76,6 +76,7 @@ class WordPressPost(WordPressBase):
         'custom_fields': 'custom_fields',
         'post_type': FieldMap('post_type', default='post'),
         'password': 'wp_password',
+        'post_format': 'wp_post_format',
     }
 
     def __str__(self):
