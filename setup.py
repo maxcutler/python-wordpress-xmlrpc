@@ -5,7 +5,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
-setup(name='wordpress_xmlrpc',
+setup(name='python-wordpress-xmlrpc',
       version='1.3',
       description='WordPress XML-RPC API Integration Library',
       author='Max Cutler',
@@ -14,4 +14,17 @@ setup(name='wordpress_xmlrpc',
       packages=['wordpress_xmlrpc', 'wordpress_xmlrpc.methods'],
       license='BSD',
       test_suite='nose.collector',
+      classifiers=[
+          'Programming Language :: Python',
+          'License :: OSI Approved :: BSD License',
+          'Operating System :: OS Independent',
+          'Development Status :: 4 - Beta',
+          'Intended Audience :: Developers',
+          'Environment :: Console',
+          'Environment :: Web Environment',
+          'Topic :: Software Development :: Libraries :: Python Modules',
+          'Topic :: Internet :: WWW/HTTP :: Site Management',
+          'Topic :: Utilities',
+          'Natural Language :: English',
+      ]
      )

@@ -2,4 +2,5 @@
 *.swp
 *.egg-info
 .DS_Store
+dist/*
 wp-config.cfg
