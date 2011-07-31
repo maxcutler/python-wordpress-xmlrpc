@@ -89,6 +89,29 @@ class GetPostStatusList(AuthenticatedMethod):
     method_name = 'wp.getPostStatusList'
 
 
+class GetPostFormats(AuthenticatedMethod):
+    """
+    Retrieve the set of post formats used by the blog.
+
+    Parameters:
+        None
+
+    Returns: `dict` containing a `dict` of all blog post formats (`all`)
+             and a list of formats `supported` by the theme.
+
+    Example:
+        >>> client.call(GetPostFormats())
+        {'all': {'status': 'Status', 'quote': 'Quote', 'image': 'Image', 'aside': 'Aside', 'standard': 'Standard', 'link': 'Link', 'chat': 'Chat', 'video': 'Video', 'audio': 'Audio', 'gallery': 'Gallery'},
+         'supported': ['aside', 'link', 'gallery', 'status', 'quote', 'image']}
+    """
+    method_name = 'wp.getPostFormats'
+
+    def get_args(self, client):
+        args = super(GetPostFormats, self).get_args(client)
+        args += ({'show-supported': True},)
+        return args
+
+
 class PublishPost(AuthParamsOffsetMixin, AuthenticatedMethod):
     """
     Mark a blog post as published.

@@ -14,6 +14,13 @@ class TestPosts(WordPressTestCase):
         self.assertTrue(isinstance(status_list, dict))
 
     @attr('posts')
+    def test_get_post_formats(self):
+        formats = self.client.call(posts.GetPostFormats())
+        self.assertTrue(isinstance(formats, dict))
+        self.assertTrue('all' in formats)
+        self.assertTrue('supported' in formats)
+
+    @attr('posts')
     def test_get_recent_posts(self):
         num_posts = 10
         recent_posts = self.client.call(posts.GetRecentPosts(num_posts))

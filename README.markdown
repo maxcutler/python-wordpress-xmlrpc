@@ -123,6 +123,7 @@ method parameters and return values.
 * EditPost(post_id, content, publish)
 * DeletePost(post_id)
 * GetPostStatusList()
+* GetPostFormats() - requires WordPress 3.2 or newer
 * PublishPost(post_id)
 * UploadFile(data)
 
