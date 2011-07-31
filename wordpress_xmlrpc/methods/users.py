@@ -10,7 +10,7 @@ class GetUserInfo(BloggerApiMethodMixin, AuthenticatedMethod):
     Parameters:
         None
 
-    Returns: instance of `WordPressUser` reprenting the user whose credentials are being used with the XML-RPC API.
+    Returns: instance of `WordPressUser` representing the user whose credentials are being used with the XML-RPC API.
     """
     method_name = 'blogger.getUserInfo'
     requires_blog = False
