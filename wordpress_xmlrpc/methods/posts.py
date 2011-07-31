@@ -19,7 +19,7 @@ class GetRecentPosts(AuthenticatedMethod):
 
 class GetPost(AuthParamsOffsetMixin, AuthenticatedMethod):
     """
-    Retreive an individual blog post.
+    Retrieve an individual blog post.
 
     Parameters:
         `post_id`: ID of the blog post to retrieve.
