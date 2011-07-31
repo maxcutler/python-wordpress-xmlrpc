@@ -199,6 +199,22 @@ class WordPressTag(WordPressBase):
         return self.name
 
 
+class WordPressMedia(WordPressBase):
+    definition = {
+        'parent': 'parent',
+        'title': 'title',
+        'description': 'description',
+        'caption': 'caption',
+        'date_created': FieldMap('date_created_gmt', conversion=xmlrpclib.DateTime),
+        'link': 'link',
+        'thumbnail': 'thumbnail',
+        'metadata': 'metadata',
+    }
+
+    def __str__(self):
+        return self.title
+
+
 class WordPressOption(WordPressBase):
     definition = {
         'name': 'name',

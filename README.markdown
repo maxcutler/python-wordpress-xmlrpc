@@ -107,6 +107,7 @@ Available classes:
 * WordPressCategory
 * WordPressComment
 * WordPressTag
+* WordPressMedia
 * WordPressOption
 
 XML-RPC Methods
@@ -125,7 +126,6 @@ method parameters and return values.
 * GetPostStatusList()
 * GetPostFormats() - requires WordPress 3.2 or newer
 * PublishPost(post_id)
-* UploadFile(data)
 
 ### methods.pages
 
@@ -162,6 +162,12 @@ method parameters and return values.
 * GetUserInfo()
 * GetUsersBlogs()
 * GetAuthors()
+
+### methods.media
+
+* GetMediaLibrary(filter) - requires WordPress 3.1 or newer
+* GetMediaItem(attachmend_id) - requires WordPress 3.1 or newer
+* UploadFile(data)
 
 ### methods.options
 

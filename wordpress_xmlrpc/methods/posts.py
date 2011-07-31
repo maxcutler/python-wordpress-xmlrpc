@@ -123,22 +123,3 @@ class PublishPost(AuthParamsOffsetMixin, AuthenticatedMethod):
     """
     method_name = 'mt.publishPost'
     method_args = ('post_id',)
-
-
-class UploadFile(AuthenticatedMethod):
-    """
-    Upload a file to the blog.
-
-    Note: the file is not attached to or inserted into any blog posts.
-
-    Parameters:
-        `data`: `dict` with three items:
-            `name`: filename
-            `type`: MIME-type of the file
-            `bits`: base-64 encoded contents of the file. See xmlrpclib.Binary()
-            `overwrite` (optional): flag to override an existing file with this name
-
-    Returns: `dict` with keys `file` (filename), `url` (public URL), and `type` (MIME-type).
-    """
-    method_name = 'wp.uploadFile'
-    method_args = ('data',)
