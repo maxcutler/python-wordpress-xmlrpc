@@ -164,7 +164,6 @@ method parameters and return values.
 ### To Be Implemented
 
 * methods.pages
-* methods.pingbacks
 
 Running Tests
 ==========
