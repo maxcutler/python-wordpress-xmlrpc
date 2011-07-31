@@ -81,6 +81,35 @@ class WordPressPost(WordPressBase):
         return self.title
 
 
+class WordPressPage(WordPressBase):
+    definition = {
+        'id': 'page_id',
+        'user': 'wp_author_id',
+        'author': 'wp_author_display_name',
+        'date_created': FieldMap('dateCreated', conversion=xmlrpclib.DateTime),
+        'slug': 'wp_slug',
+        'page_status': 'page_status',
+        'title': 'title',
+        'description': 'description',
+        'excerpt': 'excerpt',
+        'extended_text': 'text_more',
+        'link': 'link',
+        'permalink': 'permaLink',
+        'allow_comments': FieldMap('mt_allow_comments', conversion=int),
+        'allow_pings': FieldMap('mt_allow_pings', conversion=int),
+        'tags': 'mt_keywords',
+        'categories': 'categories',
+        'custom_fields': 'custom_fields',
+        'template': 'wp_page_template',
+        'parent_id': FieldMap('wp_page_parent_id', conversion=int),
+        'parent_title': 'wp_page_parent_title',
+        'order': FieldMap('wp_page_order', conversion=int),
+    }
+
+    def __str__(self):
+        return self.title
+
+
 class WordPressComment(WordPressBase):
     definition = {
         'id': 'comment_id',

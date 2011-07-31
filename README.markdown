@@ -15,7 +15,7 @@ NOTE: The XML-RPC API is disabled in WordPress by default. To enable,
 go to Settings->Writing->Remote Publishing and check the box for
 XML-RPC.
 
-This library was developed against and tested on WordPress 3.0.
+This library was developed against and tested on WordPress 3.2.
 This library is only compatible with Python 2.x.
 
 Usage
@@ -100,6 +100,7 @@ See `wordpress.py` for full details.
 Available classes:
 
 * WordPressPost
+* WordPressPage
 * WordPressBlog
 * WordPressAuthor
 * WordPressUser
@@ -124,6 +125,16 @@ method parameters and return values.
 * GetPostStatusList()
 * PublishPost(post_id)
 * UploadFile(data)
+
+### methods.pages
+
+* GetPages(num_pages)
+* GetPage(page_id)
+* NewPage(content, publish)
+* EditPage(page_id, content, publish)
+* DeletePage(page_id)
+* GetPageStatusList()
+* GetPageTemplates()
 
 ### methods.categories
 
@@ -160,10 +171,6 @@ method parameters and return values.
 
 * SayHello()
 * AddTwoNumbers(number1, number2)
-
-### To Be Implemented
-
-* methods.pages
 
 Running Tests
 ==========
