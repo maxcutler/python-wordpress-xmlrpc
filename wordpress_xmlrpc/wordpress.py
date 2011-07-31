@@ -171,7 +171,7 @@ class WordPressUser(WordPressBase):
 class WordPressCategory(WordPressBase):
     definition = {
         'cat_id': 'categoryId',
-        'parent_id': 'parentId',
+        'parent_id': FieldMap('parentId', ['parentId', 'parent_id']),
         'name': FieldMap('categoryName', ['categoryName', 'name']),
         'description': 'categoryDescription',
         'url': 'htmlUrl',
