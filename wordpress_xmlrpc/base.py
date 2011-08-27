@@ -2,7 +2,7 @@ import xmlrpclib
 import collections
 import types
 
-from wordpress_xmlrpc.exceptions import ServerConnectionError
+from wordpress_xmlrpc.exceptions import ServerConnectionError, UnsupportedXmlrpcMethodError
 
 
 class Client(object):
@@ -26,7 +26,9 @@ class Client(object):
             raise ServerConnectionError(repr(e))
 
     def call(self, method):
-        assert (method.method_name in self.supported_methods)
+        if method.method_name not in self.supported_methods:
+            raise UnsupportedXmlrpcMethodError(method.method_name)
+
         server_method = getattr(self.server, method.method_name)
         args = method.get_args(self)
         raw_result = server_method(*args)

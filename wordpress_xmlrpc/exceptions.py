@@ -5,6 +5,14 @@ class ServerConnectionError(Exception):
     pass
 
 
+class UnsupportedXmlrpcMethodError(Exception):
+    """
+    An error while attempting to call a method that is not
+    supported by the XML-RPC server.
+    """
+    pass
+
+
 class FieldConversionError(Exception):
     """
     An error while converting field Python value to XML-RPC value type.
