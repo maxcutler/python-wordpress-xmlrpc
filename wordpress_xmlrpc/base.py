@@ -2,6 +2,8 @@ import xmlrpclib
 import collections
 import types
 
+from wordpress_xmlrpc.exceptions import ServerConnectionError
+
 
 class Client(object):
     """
@@ -17,8 +19,11 @@ class Client(object):
         self.password = password
         self.blog_id = blog_id
 
-        self.server = xmlrpclib.ServerProxy(url, allow_none=True)
-        self.supported_methods = self.server.mt.supportedMethods()
+        try:
+            self.server = xmlrpclib.ServerProxy(url, allow_none=True)
+            self.supported_methods = self.server.mt.supportedMethods()
+        except xmlrpclib.ProtocolError, e:
+            raise ServerConnectionError(repr(e))
 
     def call(self, method):
         assert (method.method_name in self.supported_methods)

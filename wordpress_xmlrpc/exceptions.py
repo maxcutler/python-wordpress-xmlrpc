@@ -1,3 +1,10 @@
+class ServerConnectionError(Exception):
+    """
+    An error while attempting to connect to the XML-RPC endpoint.
+    """
+    pass
+
+
 class FieldConversionError(Exception):
     """
     An error while converting field Python value to XML-RPC value type.
