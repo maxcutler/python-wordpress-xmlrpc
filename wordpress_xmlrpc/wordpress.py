@@ -1,17 +1,4 @@
-import xmlrpclib
-
-
-class FieldMap(object):
-    """
-    Container for settings mapping a WordPress XML-RPC request/response struct
-    to a Python, programmer-friendly class.
-    """
-
-    def __init__(self, inputName, outputNames=None, default=None, conversion=None):
-        self.name = inputName
-        self.output_names = outputNames or [inputName]
-        self.default = default
-        self.conversion = conversion
+from .fieldmaps import FieldMap, IntegerFieldMap, DateTimeFieldMap
 
 
 class WordPressBase(object):
@@ -24,32 +11,33 @@ class WordPressBase(object):
     the list of fields and a `FieldMap` instance to handle conversion
     for XML-RPC calls.
     """
+    definition = {}
 
     def __init__(self, xmlrpc=None):
-        if self.definition:
-            self._def = {}
-            for key, value in self.definition.items():
-                if isinstance(value, FieldMap):
-                    self._def[key] = value
-                else:
-                    self._def[key] = FieldMap(value)
+        # create private variable containing all FieldMaps for the `definition`
+        self._def = {}
 
-                fmap = self._def[key]
-                if xmlrpc:
-                    setattr(self, key, xmlrpc.get(fmap.name, fmap.default))
-                elif fmap.default:
-                    setattr(self, key, fmap.default)
+        for key, value in self.definition.items():
+            # if the definition was not a FieldMap, create a simple FieldMap
+            if isinstance(value, FieldMap):
+                self._def[key] = value
+            else:
+                self._def[key] = FieldMap(value)
+
+            # convert and store the value on this instance if non-empty
+            converted_value = self._def[key].convert_to_python(xmlrpc)
+            if converted_value:
+                setattr(self, key, converted_value)
 
     @property
     def struct(self):
+        """
+        XML-RPC-friendly representation of the current object state
+        """
         data = {}
         for var, fmap in self._def.items():
             if hasattr(self, var):
-                for output in fmap.output_names:
-                    if fmap.conversion:
-                        data[output] = fmap.conversion(getattr(self, var))
-                    else:
-                        data[output] = getattr(self, var)
+                data.update(fmap.get_outputs(getattr(self, var)))
         return data
 
     def __repr__(self):
@@ -60,7 +48,7 @@ class WordPressPost(WordPressBase):
     definition = {
         'id': 'postid',
         'user': 'wp_author_id',
-        'date_created': FieldMap('dateCreated', conversion=xmlrpclib.DateTime),
+        'date_created': DateTimeFieldMap('dateCreated'),
         'slug': 'wp_slug',
         'post_status': 'post_status',
         'title': 'title',
@@ -69,8 +57,8 @@ class WordPressPost(WordPressBase):
         'extended_text': 'mt_text_more',
         'link': 'link',
         'permalink': 'permaLink',
-        'allow_comments': FieldMap('mt_allow_comments', conversion=int),
-        'allow_pings': FieldMap('mt_allow_pings', conversion=int),
+        'allow_comments': IntegerFieldMap('mt_allow_comments'),
+        'allow_pings': IntegerFieldMap('mt_allow_pings'),
         'tags': 'mt_keywords',
         'categories': 'categories',
         'custom_fields': 'custom_fields',
@@ -88,7 +76,7 @@ class WordPressPage(WordPressBase):
         'id': 'page_id',
         'user': 'wp_author_id',
         'author': 'wp_author_display_name',
-        'date_created': FieldMap('dateCreated', conversion=xmlrpclib.DateTime),
+        'date_created': DateTimeFieldMap('dateCreated'),
         'slug': 'wp_slug',
         'page_status': 'page_status',
         'title': 'title',
@@ -97,15 +85,15 @@ class WordPressPage(WordPressBase):
         'extended_text': 'text_more',
         'link': 'link',
         'permalink': 'permaLink',
-        'allow_comments': FieldMap('mt_allow_comments', conversion=int),
-        'allow_pings': FieldMap('mt_allow_pings', conversion=int),
+        'allow_comments': IntegerFieldMap('mt_allow_comments'),
+        'allow_pings': IntegerFieldMap('mt_allow_pings'),
         'tags': 'mt_keywords',
         'categories': 'categories',
         'custom_fields': 'custom_fields',
         'template': 'wp_page_template',
-        'parent_id': FieldMap('wp_page_parent_id', conversion=int),
+        'parent_id': IntegerFieldMap('wp_page_parent_id'),
         'parent_title': 'wp_page_parent_title',
-        'order': FieldMap('wp_page_order', conversion=int),
+        'order': IntegerFieldMap('wp_page_order'),
         'password': 'wp_password',
     }
 
@@ -120,7 +108,7 @@ class WordPressComment(WordPressBase):
         'post': 'post_id',
         'post_title': 'post_title',
         'parent': 'comment_parent',
-        'date_created': FieldMap('dateCreated', conversion=xmlrpclib.DateTime),
+        'date_created': DateTimeFieldMap('dateCreated'),
         'status': 'status',
         'content': 'content',
         'link': 'link',
@@ -205,7 +193,7 @@ class WordPressMedia(WordPressBase):
         'title': 'title',
         'description': 'description',
         'caption': 'caption',
-        'date_created': FieldMap('date_created_gmt', conversion=xmlrpclib.DateTime),
+        'date_created': DateTimeFieldMap('date_created_gmt'),
         'link': 'link',
         'thumbnail': 'thumbnail',
         'metadata': 'metadata',
