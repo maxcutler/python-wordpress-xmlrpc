@@ -13,6 +13,21 @@ class UnsupportedXmlrpcMethodError(Exception):
     pass
 
 
+class XmlrpcDisabledError(Exception):
+    """
+    An error when XML-RPC services are disabled in WordPress.
+    """
+    pass
+
+
+class InvalidCredentialsError(Exception):
+    """
+    An error when the XML-RPC server rejects the user's credentials
+    (username/password combination).
+    """
+    pass
+
+
 class FieldConversionError(Exception):
     """
     An error while converting field Python value to XML-RPC value type.

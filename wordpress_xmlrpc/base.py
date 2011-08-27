@@ -2,7 +2,7 @@ import xmlrpclib
 import collections
 import types
 
-from wordpress_xmlrpc.exceptions import ServerConnectionError, UnsupportedXmlrpcMethodError
+from wordpress_xmlrpc.exceptions import ServerConnectionError, UnsupportedXmlrpcMethodError, InvalidCredentialsError, XmlrpcDisabledError
 
 
 class Client(object):
@@ -31,7 +31,16 @@ class Client(object):
 
         server_method = getattr(self.server, method.method_name)
         args = method.get_args(self)
-        raw_result = server_method(*args)
+
+        try:
+            raw_result = server_method(*args)
+        except xmlrpclib.Fault, e:
+            if e.faultCode == 403:
+                raise InvalidCredentialsError(e.faultString)
+            elif e.faultCode == 405:
+                raise XmlrpcDisabledError(e.faultString)
+            else:
+                raise
         return method.process_result(raw_result)
 
 
