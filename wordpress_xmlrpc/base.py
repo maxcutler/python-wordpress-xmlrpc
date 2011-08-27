@@ -17,7 +17,7 @@ class Client(object):
         self.password = password
         self.blog_id = blog_id
 
-        self.server = xmlrpclib.ServerProxy(url, use_datetime=True, allow_none=True)
+        self.server = xmlrpclib.ServerProxy(url, allow_none=True)
         self.supported_methods = self.server.mt.supportedMethods()
 
     def call(self, method):

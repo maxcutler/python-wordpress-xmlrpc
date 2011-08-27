@@ -1,4 +1,5 @@
 import xmlrpclib
+import datetime
 
 
 class FieldMap(object):
@@ -74,3 +75,18 @@ class DateTimeFieldMap(FieldMap):
             kwargs['conversion'] = xmlrpclib.DateTime
 
         super(DateTimeFieldMap, self).__init__(*args, **kwargs)
+
+    def convert_to_python(self, xmlrpc=None):
+        if xmlrpc:
+            # make sure we have an `xmlrpclib.DateTime` instance
+            raw_value = xmlrpc.get(self.name, self.default)
+            if not isinstance(raw_value, xmlrpclib.DateTime):
+                raw_value = xmlrpclib.DateTime(raw_value)
+
+            # extract its timetuple and convert to datetime
+            tt = raw_value.timetuple()
+            return datetime.datetime(*tuple(tt)[:6])
+        elif self.default:
+            return self.default
+        else:
+            return None
