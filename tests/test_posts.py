@@ -3,7 +3,7 @@ from nose.plugins.attrib import attr
 from tests import WordPressTestCase
 
 from wordpress_xmlrpc.methods import posts
-from wordpress_xmlrpc.wordpress import WordPressPost
+from wordpress_xmlrpc.wordpress import WordPressPost, WordPressPostType
 
 
 class TestPosts(WordPressTestCase):
@@ -58,3 +58,13 @@ class TestPosts(WordPressTestCase):
         # delete the post
         response = self.client.call(posts.DeletePost(post_id))
         self.assertTrue(response)
+
+    @attr('post_types')
+    def test_get_post_types(self):
+        post_types = self.client.call(posts.GetPostTypes())
+        self.assert_list_of_classes(post_types, WordPressPostType)
+
+    @attr('post_types')
+    def test_get_post_type(self):
+        post_type = self.client.call(posts.GetPostType('post'))
+        self.assertTrue(isinstance(post_type, WordPressPostType))

@@ -1,6 +1,6 @@
 from wordpress_xmlrpc.base import *
 from wordpress_xmlrpc.mixins import *
-from wordpress_xmlrpc.wordpress import WordPressPost
+from wordpress_xmlrpc.wordpress import WordPressPost, WordPressPostType
 
 
 class GetRecentPosts(AuthenticatedMethod):
@@ -123,3 +123,30 @@ class PublishPost(AuthParamsOffsetMixin, AuthenticatedMethod):
     """
     method_name = 'mt.publishPost'
     method_args = ('post_id',)
+
+
+class GetPostTypes(AuthenticatedMethod):
+    """
+    Retrieve a list of post types used by the blog.
+
+    Parameters:
+        None
+
+    Returns: `list` of `WordPressPostType` instances.
+    """
+    method_name = 'wp.getPostTypes'
+    results_class = WordPressPostType
+
+
+class GetPostType(AuthenticatedMethod):
+    """
+    Retrieve an individual blog post type.
+
+    Parameters:
+        `post_type_name`: Name of the blog post type to retrieve.
+
+    Returns: `WordPressPostType` instance.
+    """
+    method_name = 'wp.getPostType'
+    method_args = ('post_type_name',)
+    results_class = WordPressPostType

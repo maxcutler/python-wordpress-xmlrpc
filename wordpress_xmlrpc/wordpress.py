@@ -253,3 +253,31 @@ class WordPressTerm(WordPressBase):
 
     def __str__(self):
         return self.name
+
+
+class WordPressPostType(WordPressBase):
+    definition = {
+        'name': 'name',
+        'label': 'label',
+        'labels': 'labels',
+        'cap': 'cap',
+        'capability_type': 'capability_type',
+        'description': 'description',
+        'exclude_from_search': 'exclude_from_search',
+        'has_archive': 'has_archive',
+        'hierarchical': 'hierarchical',
+        'menu_icon': 'menu_icon',
+        'menu_position': 'menu_position',
+        'public': 'public',
+        'publicly_queryable': 'publicly_queryable',
+        'query_var': 'query_var',
+        'rewrite': 'rewrite',
+        'show_in_menu': 'show_in_menu',
+        'show_in_nav_menus': 'show_in_nav_menus',
+        'show_ui': 'show_ui',
+        'taxonomies': 'taxonomies',
+        'is_builtin': '_builtin'
+    }
+
+    def __str__(self):
+        return self.label
