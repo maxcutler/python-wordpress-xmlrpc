@@ -74,7 +74,7 @@ class XmlrpcMethod(object):
         if self.method_args or self.optional_args:
             if self.optional_args:
                 max_num_args = len(self.method_args) + len(self.optional_args)
-                if not ( len(self.method_args) <= len(args) <= max_num_args ):
+                if not (len(self.method_args) <= len(args) <= max_num_args):
                     raise ValueError("Invalid number of parameters to %s" % self.method_name)
             else:
                 if len(args) != len(self.method_args):
