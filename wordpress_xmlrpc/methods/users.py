@@ -41,3 +41,34 @@ class GetAuthors(AuthenticatedMethod):
     """
     method_name = 'wp.getAuthors'
     results_class = WordPressAuthor
+
+
+class GetUsers(AuthenticatedMethod):
+    """
+    Retrieve list of users in the blog.
+
+    Parameters:
+        `filter`: (optional) `dict` of filters to modify the query. Valid keys are 'number', 'offset', and 'role'.
+        `fields`: (optional) `list` of fields to return. Specific fields, or groups 'basic' or 'all'.
+
+    Returns: `list` of `WordPressUser` instances.
+    """
+    method_name = 'wp.getUsers'
+    optional_args = ('filter', 'fields')
+    results_class = WordPressUser
+
+
+class GetUser(AuthenticatedMethod):
+    """
+    Retrieve an individual user.
+
+    Parameters:
+        `user_id`: ID of the user
+        `fields`: (optional) `list` of fields to return. Specific fields, or groups 'basic' or 'all'.
+
+    Returns: `WordPressUser` instance.
+    """
+    method_name = 'wp.getUser'
+    method_args = ('user_id',)
+    optional_args = ('fields',)
+    results_class = WordPressUser
