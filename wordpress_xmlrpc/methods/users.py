@@ -72,3 +72,45 @@ class GetUser(AuthenticatedMethod):
     method_args = ('user_id',)
     optional_args = ('fields',)
     results_class = WordPressUser
+
+
+class NewUser(AuthenticatedMethod):
+    """
+    Create new user on the blog.
+
+    Parameters:
+        `user`: A `WordPressUser` instance with at least `username`, `password`, and `email`.
+        `send_mail`: (optional) Send a confirmation email to the new user.
+
+    Returns: ID of the newly-created blog user (an integer).
+    """
+    method_name = 'wp.newUser'
+    method_args = ('user',)
+    optional_args = ('send_mail',)
+
+
+class EditUser(AuthenticatedMethod):
+    """
+    Edit an existing blog post.
+
+    Parameters:
+        `user_id`: ID of the user to edit.
+        `user`: `WordPressUser` instance.
+
+    Returns: `True` on successful edit.
+    """
+    method_name = 'wp.editUser'
+    method_args = ('user_id', 'user')
+
+
+class DeleteUser(AuthenticatedMethod):
+    """
+    Delete a blog user.
+
+    Parameters:
+        `user_id`: ID of the blog user to delete.
+
+    Returns: `True` on successful deletion.
+    """
+    method_name = 'wp.deleteUser'
+    method_args = ('user_id',)

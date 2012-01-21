@@ -154,6 +154,8 @@ class WordPressUser(WordPressBase):
     definition = {
         'user_id': 'user_id',
         'username': 'username',
+        'password': 'password',
+        'role': 'role',
         'nickname': 'nickname',
         'url': 'url',
         'first_name': 'first_name',
