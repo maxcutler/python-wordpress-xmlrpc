@@ -236,3 +236,20 @@ class WordPressTaxonomy(WordPressBase):
 
     def __str__(self):
         return self.name
+
+
+class WordPressTerm(WordPressBase):
+    definition = {
+        'term_id': 'term_id',
+        'group': 'term_group',
+        'taxonomy': 'taxonomy',
+        'taxonomy_id': 'term_taxonomy_id',
+        'name': 'name',
+        'slug': 'slug',
+        'description': 'description',
+        'parent': 'parent',
+        'count': IntegerFieldMap('count')
+    }
+
+    def __str__(self):
+        return self.name
