@@ -217,3 +217,22 @@ class WordPressOption(WordPressBase):
 
     def __str__(self):
         return '%s="%s"' % (self.name, self.value)
+
+
+class WordPressTaxonomy(WordPressBase):
+    definition = {
+        'name': 'name',
+        'labels': 'labels',
+        'hierarchical': 'hierarchical',
+        'public': 'public',
+        'query_var': 'query_var',
+        'rewrite': 'rewrite',
+        'show_ui': 'show_ui',
+        'show_tagcloud': 'show_tagcloud',
+        'show_in_nav_menus': 'show_in_nav_menus',
+        'cap': 'cap',
+        'is_builtin': '_builtin'
+    }
+
+    def __str__(self):
+        return self.name
