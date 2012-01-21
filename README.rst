@@ -17,7 +17,8 @@ NOTE: The XML-RPC API is disabled in WordPress by default. To enable,
 go to Settings->Writing->Remote Publishing and check the box for
 XML-RPC.
 
-This library was developed against and tested on WordPress 3.2.
+This branch of python-wordpress-xmlrpc is tested on trunk of
+WordPress 3.4 with the wp-xmlrpc-modernization plugin installed.
 This library is only compatible with Python 2.x.
 
 Usage
@@ -115,6 +116,9 @@ Available classes:
 * WordPressTag
 * WordPressMedia
 * WordPressOption
+* WordPressTaxonomy
+* WordPressTerm
+* WordPressPostType
 
 XML-RPC Methods
 ---------------
@@ -133,6 +137,8 @@ methods.posts
 * GetPostStatusList()
 * GetPostFormats() - requires WordPress 3.2 or newer
 * PublishPost(post_id)
+* GetPostTypes() - requires wp-xmlrpc-modernization plugin
+* GetPostType(post_type_name) - requires wp-xmlrpc-modernization plugin
 
 methods.pages
 ~~~~~~~~~~~~~
@@ -156,6 +162,19 @@ methods.categories
 * SetPostCategories(post_id, categories)
 * GetTags()
 
+methods.taxonomies - requires wp-xmlrpc-modernization plugin
+~~~~~~~~~~~~~~~~~~
+
+* GetTaxonomies()
+* GetTaxonomy(taxonomy_name)
+* GetTerms(taxonomy_name)
+* GetTerm(taxonomy_name, term_id)
+* NewTerm(term)
+* EditTerm(term_id, term)
+* DeleteTerm(taxonomy_name, term_id)
+* GetPostTerms(post_id, group_by_taxonomy)
+* SetPostTerms(post_id, terms)
+
 methods.comments
 ~~~~~~~~~~~~~~~~
 
@@ -173,6 +192,11 @@ methods.users
 * GetUserInfo()
 * GetUsersBlogs()
 * GetAuthors()
+* GetUsers([filter, fields]) - requires wp-xmlrpc-modernization plugin
+* GetUser(user_id[, fields]) - requires wp-xmlrpc-modernization plugin
+* NewUser(user[, send_mail]) - requires wp-xmlrpc-modernization plugin
+* EditUser(user_id, user) - requires wp-xmlrpc-modernization plugin
+* DeleteUser(user_id[, reassign_id]) - requires wp-xmlrpc-modernization plugin
 
 methods.media
 ~~~~~~~~~~~~~
