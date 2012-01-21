@@ -152,11 +152,20 @@ class WordPressAuthor(WordPressBase):
 
 class WordPressUser(WordPressBase):
     definition = {
-        'user_id': 'userid',
+        'user_id': 'user_id',
+        'username': 'username',
         'nickname': 'nickname',
         'url': 'url',
-        'first_name': 'firstname',
-        'last_name': 'lastname',
+        'first_name': 'first_name',
+        'last_name': 'last_name',
+        'registered': DateTimeFieldMap('registered'),
+        'bio': 'bio',
+        'email': 'email',
+        'nicename': 'nicename',
+        'display_name': 'display_name',
+        'capabilities': 'capabilities',
+        'user_level': 'user_level',
+        'user_contacts': 'user_contacts'
     }
 
     def __str__(self):

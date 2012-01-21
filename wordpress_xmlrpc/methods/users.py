@@ -3,7 +3,7 @@ from wordpress_xmlrpc.mixins import *
 from wordpress_xmlrpc.wordpress import WordPressBlog, WordPressAuthor, WordPressUser
 
 
-class GetUserInfo(BloggerApiMethodMixin, AuthenticatedMethod):
+class GetUserInfo(AuthenticatedMethod):
     """
     Retrieve information about the connected user.
 
@@ -12,8 +12,7 @@ class GetUserInfo(BloggerApiMethodMixin, AuthenticatedMethod):
 
     Returns: instance of `WordPressUser` representing the user whose credentials are being used with the XML-RPC API.
     """
-    method_name = 'blogger.getUserInfo'
-    requires_blog = False
+    method_name = 'wp.getUserInfo'
     results_class = WordPressUser
 
 
