@@ -109,8 +109,10 @@ class DeleteUser(AuthenticatedMethod):
 
     Parameters:
         `user_id`: ID of the blog user to delete.
+        `reassign_id`: ID of the blog user to reassign this user's posts to.
 
     Returns: `True` on successful deletion.
     """
     method_name = 'wp.deleteUser'
     method_args = ('user_id',)
+    optional_args = ('reassign_id',)
