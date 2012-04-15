@@ -99,10 +99,46 @@ class TestTaxonomies(WordPressTestCase):
         self.assertTrue(child_id)
         child.term_id = child_id
 
-        # re-fetch to verify
-        child2 = self.client.call(taxonomies.GetTerm(child.taxonomy, child.term_id))
-        self.assertEqual(child.parent, int(child2.parent))
+        try:
+            # re-fetch to verify
+            child2 = self.client.call(taxonomies.GetTerm(child.taxonomy, child.term_id))
+            self.assertEqual(child.parent, child2.parent)
+        finally:
+            # cleanup
+            self.client.call(taxonomies.DeleteTerm(child.taxonomy, child.term_id))
+            self.client.call(taxonomies.DeleteTerm(parent.taxonomy, parent.term_id))
 
-        # cleanup
-        self.client.call(taxonomies.DeleteTerm(child.taxonomy, child.term_id))
-        self.client.call(taxonomies.DeleteTerm(parent.taxonomy, parent.term_id))
+    @attr('taxonomies')
+    @attr('terms')
+    def test_term_search(self):
+        tag1 = WordPressTerm()
+        tag1.taxonomy = 'post_tag'
+        tag1.name = 'Test FoobarA'
+
+        tag1_id = self.client.call(taxonomies.NewTerm(tag1))
+        self.assertTrue(tag1_id)
+        tag1.term_id = tag1_id
+
+        tag2 = WordPressTerm()
+        tag2.taxonomy = 'post_tag'
+        tag2.name = 'Test FoobarB'
+
+        tag2_id = self.client.call(taxonomies.NewTerm(tag2))
+        self.assertTrue(tag2_id)
+        tag2.term_id = tag2_id
+
+        try:
+            results = self.client.call(taxonomies.GetTerms('post_tag', {'search': 'foobarb'}))
+            found_tag1 = False
+            found_tag2 = False
+            for tag in results:
+                if tag.term_id == tag1_id:
+                    found_tag1 = True
+                elif tag.term_id == tag2_id:
+                    found_tag2 = True
+            self.assertFalse(found_tag1)
+            self.assertTrue(found_tag2)
+        finally:
+            # cleanup
+            self.client.call(taxonomies.DeleteTerm(tag1.taxonomy, tag1.term_id))
+            self.client.call(taxonomies.DeleteTerm(tag2.taxonomy, tag2.term_id))

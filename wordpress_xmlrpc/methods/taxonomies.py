@@ -36,11 +36,19 @@ class GetTerms(AuthenticatedMethod):
 
     Parameters:
         `taxonomy_name`: name of the taxonomy
+        `filter`: optional `dict` of filters
+            `number`
+            `offset`
+            `orderby`
+            `order`: 'ASC' or 'DESC'
+            `hide_empty`: Whether to return terms with count==0
+            `search`: Case-insensitive search on term names
 
     Returns: `list` of `WordPressTerm` instances.
     """
     method_name = 'wp.getTerms'
     method_args = ('taxonomy_name',)
+    optional_args = ('filter',)
     results_class = WordPressTerm
 
 
