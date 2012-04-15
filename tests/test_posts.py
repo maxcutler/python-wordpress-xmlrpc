@@ -62,7 +62,9 @@ class TestPosts(WordPressTestCase):
     @attr('post_types')
     def test_get_post_types(self):
         post_types = self.client.call(posts.GetPostTypes())
-        self.assert_list_of_classes(post_types, WordPressPostType)
+        self.assert_list_of_classes(post_types.values(), WordPressPostType)
+        for name, post_type in post_types.items():
+            self.assertEqual(name, post_type.name)
 
     @attr('post_types')
     def test_get_post_type(self):

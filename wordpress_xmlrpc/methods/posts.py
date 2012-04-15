@@ -132,10 +132,16 @@ class GetPostTypes(AuthenticatedMethod):
     Parameters:
         None
 
-    Returns: `list` of `WordPressPostType` instances.
+    Returns: `dict` with names as keys and `WordPressPostType` instances as values.
     """
     method_name = 'wp.getPostTypes'
     results_class = WordPressPostType
+
+    def process_result(self, raw_result):
+        result = {}
+        for name, raw_value in raw_result.items():
+            result[name] = self.results_class(raw_value)
+        return result
 
 
 class GetPostType(AuthenticatedMethod):
