@@ -18,7 +18,7 @@ go to Settings->Writing->Remote Publishing and check the box for
 XML-RPC.
 
 This library was developed against and tested on WordPress 3.4.
-This library is only compatible with Python 2.x.
+This library is compatible with Python 2.6+ and 3.2+.
 
 Usage
 =====
@@ -181,13 +181,10 @@ Running Tests
 Requirements
 ------------
 
-``nose`` is used as the test runner, and `nose-testconfig`__
-for specifying configuration values. To install::
+``nose`` is used as the test runner. To install::
 
 	easy_install nose
-	easy_install nose-testconfig
 
-__ http://pypi.python.org/pypi/nose-testconfig/
 
 Configuring against your server
 -------------------------------
@@ -226,10 +223,8 @@ You can use all the normal ``nose`` command line options. For example, to increa
 Full usage details:
 
 * `nose`__
-* `nose-testconfig`__
 
 __ http://readthedocs.org/docs/nose/en/latest/usage.html
-__ http://pypi.python.org/pypi/nose-testconfig/#command-line-options
 
 Contributing Tests
 ------------------

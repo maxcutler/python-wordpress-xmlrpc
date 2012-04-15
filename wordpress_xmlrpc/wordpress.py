@@ -1,3 +1,4 @@
+import sys
 from .fieldmaps import FieldMap, IntegerFieldMap, DateTimeFieldMap, TermsListFieldMap
 from wordpress_xmlrpc.exceptions import FieldConversionError
 
@@ -28,7 +29,8 @@ class WordPressBase(object):
             # convert and store the value on this instance if non-empty
             try:
                 converted_value = self._def[key].convert_to_python(xmlrpc)
-            except Exception, e:
+            except Exception:
+                e = sys.exc_info()[1]
                 raise FieldConversionError(key, e)
             if converted_value is not None:
                 setattr(self, key, converted_value)

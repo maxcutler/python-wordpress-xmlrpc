@@ -1,5 +1,6 @@
-import xmlrpclib
 import datetime
+
+from wordpress_xmlrpc.compat import xmlrpc_client
 
 
 class FieldMap(object):
@@ -72,16 +73,16 @@ class DateTimeFieldMap(FieldMap):
 
     def __init__(self, *args, **kwargs):
         if 'conversion' not in kwargs:
-            kwargs['conversion'] = xmlrpclib.DateTime
+            kwargs['conversion'] = xmlrpc_client.DateTime
 
         super(DateTimeFieldMap, self).__init__(*args, **kwargs)
 
     def convert_to_python(self, xmlrpc=None):
         if xmlrpc:
-            # make sure we have an `xmlrpclib.DateTime` instance
+            # make sure we have an `xmlrpc_client.DateTime` instance
             raw_value = xmlrpc.get(self.name, self.default)
-            if not isinstance(raw_value, xmlrpclib.DateTime):
-                raw_value = xmlrpclib.DateTime(raw_value)
+            if not isinstance(raw_value, xmlrpc_client.DateTime):
+                raw_value = xmlrpc_client.DateTime(raw_value)
 
             # extract its timetuple and convert to datetime
             tt = raw_value.timetuple()

@@ -1,7 +1,6 @@
-import xmlrpclib
 import collections
-import types
 
+from wordpress_xmlrpc.compat import xmlrpc_client, dict_type
 from wordpress_xmlrpc.exceptions import ServerConnectionError, UnsupportedXmlrpcMethodError, InvalidCredentialsError, XmlrpcDisabledError
 
 
@@ -20,9 +19,10 @@ class Client(object):
         self.blog_id = blog_id
 
         try:
-            self.server = xmlrpclib.ServerProxy(url, allow_none=True)
+            self.server = xmlrpc_client.ServerProxy(url, allow_none=True)
             self.supported_methods = self.server.mt.supportedMethods()
-        except xmlrpclib.ProtocolError, e:
+        except xmlrpc_client.ProtocolError:
+            e = sys.exc_info()[1]
             raise ServerConnectionError(repr(e))
 
     def call(self, method):
@@ -34,7 +34,8 @@ class Client(object):
 
         try:
             raw_result = server_method(*args)
-        except xmlrpclib.Fault, e:
+        except xmlrpc_client.Fault:
+            e = sys.exc_info()[1]
             if e.faultCode == 403:
                 raise InvalidCredentialsError(e.faultString)
             elif e.faultCode == 405:
@@ -126,7 +127,7 @@ class XmlrpcMethod(object):
         into one or more object instances of that class.
         """
         if self.results_class and raw_result:
-            if isinstance(raw_result, types.DictType):
+            if isinstance(raw_result, dict_type):
                 return self.results_class(raw_result)
             elif isinstance(raw_result, collections.Iterable):
                 return [self.results_class(result) for result in raw_result]
