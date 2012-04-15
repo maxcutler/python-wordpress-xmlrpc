@@ -2,46 +2,52 @@ from nose.plugins.attrib import attr
 
 from tests import WordPressTestCase
 
-from wordpress_xmlrpc.methods import categories, posts
-from wordpress_xmlrpc.wordpress import WordPressCategory, WordPressTag, WordPressPost
+from wordpress_xmlrpc.methods import taxonomies, posts
+from wordpress_xmlrpc.wordpress import WordPressTerm, WordPressPost
 
 
 class TestCategories(WordPressTestCase):
 
     @attr('categories')
     def test_get_tags(self):
-        tags = self.client.call(categories.GetTags())
-        self.assert_list_of_classes(tags, WordPressTag)
+        tags = self.client.call(taxonomies.GetTerms('post_tag'))
+        for tag in tags:
+            self.assertTrue(isinstance(tag, WordPressTerm))
+            self.assertEquals(tag.taxonomy, 'post_tag')
 
     @attr('categories')
     def test_get_categories(self):
-        cats = self.client.call(categories.GetCategories())
-        self.assert_list_of_classes(cats, WordPressCategory)
+        cats = self.client.call(taxonomies.GetTerms('category'))
+        for cat in cats:
+            self.assertTrue(isinstance(cat, WordPressTerm))
+            self.assertEquals(cat.taxonomy, 'category')
 
     @attr('categories')
     def test_category_lifecycle(self):
         # Create category object
-        cat = WordPressCategory()
+        cat = WordPressTerm()
         cat.name = 'Test Category'
+        cat.taxonomy = 'category'
 
         # Create the category in WordPress
-        cat_id = self.client.call(categories.NewCategory(cat))
+        cat_id = self.client.call(taxonomies.NewTerm(cat))
         self.assertTrue(cat_id)
-        cat.cat_id = cat_id
+        cat.id = cat_id
 
-        # Check that the new category shows in category suggestions
-        suggestions = self.client.call(categories.SuggestCategories('test', 10))
-        self.assertTrue(isinstance(suggestions, list))
-        found = False
-        for suggestion in suggestions:
-            if suggestion['category_id'] == str(cat_id):
-                found = True
-                break
-        self.assertTrue(found)
-
-        # Delete the category
-        response = self.client.call(categories.DeleteCategory(cat_id))
-        self.assertTrue(response)
+        try:
+            # Check that the new category shows in category suggestions
+            suggestions = self.client.call(taxonomies.GetTerms('category', {'search': 'test'}))
+            self.assertTrue(isinstance(suggestions, list))
+            found = False
+            for suggestion in suggestions:
+                if suggestion.id == cat_id:
+                    found = True
+                    break
+            self.assertTrue(found)
+        finally:
+            # Delete the category
+            response = self.client.call(taxonomies.DeleteTerm(cat.taxonomy, cat.id))
+            self.assertTrue(response)
 
     @attr('categories')
     def test_category_post(self):
@@ -50,22 +56,26 @@ class TestCategories(WordPressTestCase):
         post.title = 'Test Post'
         post.slug = 'test-post'
         post.user = self.userid
-        post_id = self.client.call(posts.NewPost(post))
+        post.id = self.client.call(posts.NewPost(post))
 
         # create a test category
-        cat = WordPressCategory()
+        cat = WordPressTerm()
         cat.name = 'Test Category'
-        cat.cat_id = self.client.call(categories.NewCategory(cat))
+        cat.taxonomy = 'category'
+        cat.id = self.client.call(taxonomies.NewTerm(cat))
 
         # set category on post
-        response = self.client.call(categories.SetPostCategories(post_id, [cat.struct]))
-        self.assertTrue(response)
+        try:
+            post.terms = [cat]
+            response = self.client.call(posts.EditPost(post.id, post))
+            self.assertTrue(response)
 
-        # fetch categories for the post to verify
-        post_cats = self.client.call(categories.GetPostCategories(post_id))
-        self.assert_list_of_classes(post_cats, WordPressCategory)
-        self.assertEqual(post_cats[0].cat_id, str(cat.cat_id))
-
-        # cleanup
-        self.client.call(categories.DeleteCategory(cat.cat_id))
-        self.client.call(posts.DeletePost(post_id))
+            # fetch categories for the post to verify
+            post2 = self.client.call(posts.GetPost(post.id, ['terms']))
+            post_cats = post2.terms
+            self.assert_list_of_classes(post_cats, WordPressTerm)
+            self.assertEqual(post_cats[0].id, cat.id)
+        finally:
+            # cleanup
+            self.client.call(taxonomies.DeleteTerm(cat.taxonomy, cat.id))
+            self.client.call(posts.DeletePost(post.id))
