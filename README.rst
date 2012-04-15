@@ -17,7 +17,7 @@ NOTE: The XML-RPC API is disabled in WordPress by default. To enable,
 go to Settings->Writing->Remote Publishing and check the box for
 XML-RPC.
 
-This library was developed against and tested on WordPress 3.2.
+This library was developed against and tested on WordPress 3.4.
 This library is only compatible with Python 2.x.
 
 Usage
@@ -31,11 +31,11 @@ remote call and return the result.
 ::
 
 	>>> from wordpress_xmlrpc import Client, WordPressPost
-	>>> from wordpress_xmlrpc.methods.posts import GetRecentPosts, NewPost
+	>>> from wordpress_xmlrpc.methods.posts import GetPosts, NewPost
 	>>> from wordpress_xmlrpc.methods.users import GetUserInfo
 
 	>>> wp = Client('http://mysite.wordpress.com/xmlrpc.php', 'username', 'password')
-	>>> wp.call(GetRecentPosts(10))
+	>>> wp.call(GetPosts())
 	[<WordPressPost: hello-world (id=1)>]
 
 	>>> wp.call(GetUserInfo())
@@ -43,10 +43,12 @@ remote call and return the result.
 
 	>>> post = WordPressPost()
 	>>> post.title = 'My new title'
-	>>> post.description = 'This is the body of my new post.'
-	>>> post.tags = 'test, firstpost'
-	>>> post.categories = ['Introductions', 'Tests']
-	>>> wp.call(NewPost(post, True))
+	>>> post.content = 'This is the body of my new post.'
+	>>> post.terms_names = {
+	>>>   'post_tag': ['test', 'firstpost'],
+	>>>   'category': ['Introductions', 'Tests']
+	>>> }
+	>>> wp.call(NewPost(post))
 	5
 
 Notice that properties of ``WordPress`` objects are accessed directly,
@@ -57,23 +59,6 @@ parameter is automatically extracted for consumption by XML-RPC. However,
 if you use an object in a list of other embedded data structure used as
 a parameter, be sure to use ``obj.struct`` or else WordPress will not receive
 data in the format it expects.
-
-::
-
-	>>> from wordpress_xmlrpc import Client, WordPressCategory
-	>>> from wordpress_xmlrpc.categories import NewCategory, SetPostCategories
-
-	>>> wp = Client('http://mysite.wordpress.com/xmlrpc.php', 'username', 'password')
-	>>> new_category = WordPressCategory()
-	>>> new_category.name = 'My new category'
-	>>> new_category.cat_id = wp.call(NewCategory(new_category))
-
-	>>> another_category = WordPressCategory()
-	>>> another_category.name = 'Another new category'
-	>>> another_category.cat_id = wp.call(NewCategory(another_category))
-
-	>>> wp.call(SetPostCategories(5, [new_category.struct, another_category.struct]))
-	True
 
 Custom XML-RPC Methods
 ======================
@@ -107,12 +92,13 @@ Available classes:
 
 * WordPressPost
 * WordPressPage
+* WordPressPostType
+* WordPressTaxonomy
+* WordPressTerm
 * WordPressBlog
 * WordPressAuthor
 * WordPressUser
-* WordPressCategory
 * WordPressComment
-* WordPressTag
 * WordPressMedia
 * WordPressOption
 
@@ -125,36 +111,32 @@ method parameters and return values.
 methods.posts
 ~~~~~~~~~~~~~
 
-* GetRecentPosts(num_posts)
-* GetPost(post_id)
-* NewPost(content, publish)
-* EditPost(post_id, content, publish)
+* GetPosts([filter, fields])
+* GetPost(post_id[, fields])
+* NewPost(content)
+* EditPost(post_id, content)
 * DeletePost(post_id)
+* GetPostTypes([filter, fields])
+* GetPostType(post_type[, fields])
 * GetPostStatusList()
-* GetPostFormats() - requires WordPress 3.2 or newer
-* PublishPost(post_id)
+* GetPostFormats()
 
 methods.pages
 ~~~~~~~~~~~~~
 
-* GetPages(num_pages)
-* GetPage(page_id)
-* NewPage(content, publish)
-* EditPage(page_id, content, publish)
-* DeletePage(page_id)
 * GetPageStatusList()
 * GetPageTemplates()
 
-methods.categories
+methods.taxonomies
 ~~~~~~~~~~~~~~~~~~
 
-* GetCategories()
-* NewCategory(category)
-* DeleteCategory(category_id)
-* SuggestCategories(category, max_results)
-* GetPostCategories(post_id)
-* SetPostCategories(post_id, categories)
-* GetTags()
+* GetTaxonomies()
+* GetTaxonomy(taxonomy)
+* GetTerms(taxonomy[, filter])
+* GetTerm(taxonomy, term_id)
+* NewTerm(term)
+* EditTerm(term_id, term)
+* DeleteTerm(taxonomy, term_id)
 
 methods.comments
 ~~~~~~~~~~~~~~~~
