@@ -30,7 +30,7 @@ class WordPressBase(object):
                 converted_value = self._def[key].convert_to_python(xmlrpc)
             except Exception, e:
                 raise FieldConversionError(key, e)
-            if converted_value:
+            if converted_value is not None:
                 setattr(self, key, converted_value)
 
     @property
