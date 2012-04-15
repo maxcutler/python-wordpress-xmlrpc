@@ -72,7 +72,10 @@ class WordPressPost(WordPressBase):
     }
 
     def __str__(self):
-        return self.title
+        if hasattr(self, 'title'):
+            return self.title
+        else:
+            return ''
 
 
 class WordPressPage(WordPressBase):
@@ -102,8 +105,10 @@ class WordPressPage(WordPressBase):
     }
 
     def __str__(self):
-        return self.title
-
+        if hasattr(self, 'title'):
+            return self.title
+        else:
+            return ''
 
 class WordPressComment(WordPressBase):
     definition = {
@@ -123,7 +128,10 @@ class WordPressComment(WordPressBase):
     }
 
     def __str__(self):
-        return self.content
+        if hasattr(self, 'content'):
+            return self.content
+        else:
+            return ''
 
 
 class WordPressBlog(WordPressBase):
@@ -136,7 +144,10 @@ class WordPressBlog(WordPressBase):
     }
 
     def __str__(self):
-        return self.name
+        if hasattr(self, 'name'):
+            return self.name
+        else:
+            return ''
 
 
 class WordPressAuthor(WordPressBase):
@@ -147,7 +158,10 @@ class WordPressAuthor(WordPressBase):
     }
 
     def __str__(self):
-        return self.display_name
+        if hasattr(self, 'display_name'):
+            return self.display_name
+        else:
+            return ''
 
 
 class WordPressUser(WordPressBase):
@@ -160,7 +174,10 @@ class WordPressUser(WordPressBase):
     }
 
     def __str__(self):
-        return self.nickname
+        if hasattr(self, 'nickname'):
+            return self.nickname
+        else:
+            return ''
 
 
 class WordPressCategory(WordPressBase):
@@ -174,8 +191,10 @@ class WordPressCategory(WordPressBase):
     }
 
     def __str__(self):
-        return self.name
-
+        if hasattr(self, 'name'):
+            return self.name
+        else:
+            return ''
 
 class WordPressTag(WordPressBase):
     definition = {
@@ -188,7 +207,10 @@ class WordPressTag(WordPressBase):
     }
 
     def __str__(self):
-        return self.name
+        if hasattr(self, 'name'):
+            return self.name
+        else:
+            return ''
 
 
 class WordPressMedia(WordPressBase):
@@ -204,7 +226,10 @@ class WordPressMedia(WordPressBase):
     }
 
     def __str__(self):
-        return self.title
+        if hasattr(self, 'title'):
+            return self.title
+        else:
+            return ''
 
 
 class WordPressOption(WordPressBase):
@@ -216,4 +241,7 @@ class WordPressOption(WordPressBase):
     }
 
     def __str__(self):
-        return '%s="%s"' % (self.name, self.value)
+        if hasattr(self, 'name') and hasattr(self, 'value'):
+            return '%s="%s"' % (self.name, self.value)
+        else:
+            return ''
