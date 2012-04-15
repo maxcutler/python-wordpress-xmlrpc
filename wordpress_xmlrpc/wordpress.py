@@ -47,6 +47,7 @@ class WordPressBase(object):
     def __repr__(self):
         return '<%s: %s>' % (self.__class__.__name__, unicode(self).encode('utf-8'))
 
+
 class WordPressTaxonomy(WordPressBase):
     definition = {
         'name': 'name',

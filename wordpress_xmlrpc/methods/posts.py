@@ -51,7 +51,7 @@ class NewPost(AuthenticatedMethod):
     method_args = ('content',)
 
 
-class EditPost( AuthenticatedMethod):
+class EditPost(AuthenticatedMethod):
     """
     Edit an existing blog post.
 
