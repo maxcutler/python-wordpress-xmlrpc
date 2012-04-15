@@ -50,7 +50,7 @@ class WordPressBase(object):
 
 class WordPressTaxonomy(WordPressBase):
     definition = {
-        'name': 'name',
+        'name': FieldMap('name', default=''),
         'labels': 'labels',
         'hierarchical': 'hierarchical',
         'public': 'public',
@@ -73,7 +73,7 @@ class WordPressTerm(WordPressBase):
         'group': 'term_group',
         'taxonomy': 'taxonomy',
         'taxonomy_id': 'term_taxonomy_id',
-        'name': 'name',
+        'name': FieldMap('name', default=''),
         'slug': 'slug',
         'description': 'description',
         'parent': 'parent',
@@ -92,7 +92,7 @@ class WordPressPost(WordPressBase):
         'date_modified': DateTimeFieldMap('post_modified_gmt'),
         'slug': 'post_name',
         'post_status': 'post_status',
-        'title': 'post_title',
+        'title': FieldMap('post_title', default='Untitled'),
         'content': 'post_content',
         'excerpt': 'post_excerpt',
         'link': 'link',
@@ -109,7 +109,7 @@ class WordPressPost(WordPressBase):
     }
 
     def __str__(self):
-        return self.title or self.slug
+        return self.title
 
 
 class WordPressPage(WordPressPost):
@@ -131,7 +131,7 @@ class WordPressComment(WordPressBase):
         'parent': 'comment_parent',
         'date_created': DateTimeFieldMap('dateCreated'),
         'status': 'status',
-        'content': 'content',
+        'content': FieldMap('content', default=''),
         'link': 'link',
         'author': 'author',
         'author_url': 'author_url',
@@ -146,7 +146,7 @@ class WordPressComment(WordPressBase):
 class WordPressBlog(WordPressBase):
     definition = {
         'id': 'blogid',
-        'name': 'blogName',
+        'name': FieldMap('blogName', default=''),
         'url': 'url',
         'xmlrpc': 'xmlrpc',
         'is_admin': FieldMap('isAdmin', default=False),
@@ -160,7 +160,7 @@ class WordPressAuthor(WordPressBase):
     definition = {
         'user_id': 'user_id',
         'user_login': 'user_login',
-        'display_name': 'display_name',
+        'display_name': FieldMap('display_name', default=''),
     }
 
     def __str__(self):
@@ -170,7 +170,7 @@ class WordPressAuthor(WordPressBase):
 class WordPressUser(WordPressBase):
     definition = {
         'user_id': 'userid',
-        'nickname': 'nickname',
+        'nickname': FieldMap('nickname', default=''),
         'url': 'url',
         'first_name': 'firstname',
         'last_name': 'lastname',
@@ -183,7 +183,7 @@ class WordPressUser(WordPressBase):
 class WordPressMedia(WordPressBase):
     definition = {
         'parent': 'parent',
-        'title': 'title',
+        'title': FieldMap('title', default=''),
         'description': 'description',
         'caption': 'caption',
         'date_created': DateTimeFieldMap('date_created_gmt'),
@@ -198,9 +198,9 @@ class WordPressMedia(WordPressBase):
 
 class WordPressOption(WordPressBase):
     definition = {
-        'name': 'name',
+        'name': FieldMap('name', default=''),
         'description': 'desc',
-        'value': 'value',
+        'value': FieldMap('value', default=''),
         'read_only': FieldMap('readonly', default=False),
     }
 
@@ -211,7 +211,7 @@ class WordPressOption(WordPressBase):
 class WordPressPostType(WordPressBase):
     definition = {
         'name': 'name',
-        'label': 'label',
+        'label': FieldMap('label', default=''),
         'labels': 'labels',
         'cap': 'cap',
         'capability_type': 'capability_type',
