@@ -70,7 +70,7 @@ class XmlrpcMethod(object):
     default_args_position = 0
     results_class = None
 
-    def __init__(self, *args):
+    def __init__(self, *args, **kwargs):
         if self.method_args or self.optional_args:
             if self.optional_args:
                 max_num_args = len(self.method_args) + len(self.optional_args)
@@ -88,6 +88,9 @@ class XmlrpcMethod(object):
                     if i >= len(args):
                         break
                     setattr(self, arg_name, args[i])
+
+        if 'results_class' in kwargs:
+            self.results_class = kwargs['results_class']
 
     def default_args(self, client):
         """
