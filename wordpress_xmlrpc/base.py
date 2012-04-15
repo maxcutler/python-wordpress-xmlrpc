@@ -54,8 +54,6 @@ class XmlrpcMethod(object):
         `method_name`: XML-RPC method name (e.g., 'wp.getUserInfo')
         `method_args`: Tuple of method-specific required parameters
         `optional_args`: Tuple of method-specific optional parameters
-        `args_start_position`: If greater than zero, this many dummy arguments will pad the beginning of the method argument list.
-        `default_args_position`: The index in the `method_args` list at which the default arguments should be inserted.
         `results_class`: Python class which will convert an XML-RPC response dict into an object
 
     Methods:
@@ -66,8 +64,6 @@ class XmlrpcMethod(object):
     method_name = None
     method_args = tuple()
     optional_args = tuple()
-    args_start_position = 0
-    default_args_position = 0
     results_class = None
 
     def __init__(self, *args, **kwargs):
@@ -116,11 +112,11 @@ class XmlrpcMethod(object):
                         args.append(obj.struct)
                     else:
                         args.append(obj)
-            args = args[:self.default_args_position] + list(default_args) + args[self.default_args_position:]
+            args = list(default_args) + args
         else:
             args = default_args
 
-        return ((0,) * self.args_start_position) + tuple(args)
+        return args
 
     def process_result(self, raw_result):
         """
@@ -149,15 +145,9 @@ class AuthenticatedMethod(XmlrpcMethod):
     """
     An XML-RPC method for which user authentication is required.
 
-    Username and password details will be passed from the `Client`
-    instance to the method call.
-
-    By default, the `Client`-defined blog ID will also be passed.
+    Blog ID, username and password details will be passed from
+    the `Client` instance to the method call.
     """
-    requires_blog = True
 
     def default_args(self, client):
-        if self.requires_blog:
-            return (client.blog_id, client.username, client.password)
-        else:
-            return (client.username, client.password)
+        return (client.blog_id, client.username, client.password)
