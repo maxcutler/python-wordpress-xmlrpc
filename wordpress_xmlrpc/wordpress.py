@@ -111,34 +111,14 @@ class WordPressPost(WordPressBase):
         return self.title or self.slug
 
 
-class WordPressPage(WordPressBase):
-    definition = {
-        'id': 'page_id',
-        'user': 'wp_author_id',
-        'author': 'wp_author_display_name',
-        'date_created': DateTimeFieldMap('dateCreated'),
-        'slug': 'wp_slug',
-        'page_status': 'page_status',
-        'title': 'title',
-        'description': 'description',
-        'excerpt': 'excerpt',
-        'extended_text': 'text_more',
-        'link': 'link',
-        'permalink': 'permaLink',
-        'allow_comments': IntegerFieldMap('mt_allow_comments'),
-        'allow_pings': IntegerFieldMap('mt_allow_pings'),
-        'tags': 'mt_keywords',
-        'categories': 'categories',
-        'custom_fields': 'custom_fields',
+class WordPressPage(WordPressPost):
+    definition = dict(WordPressPost.definition, **{
         'template': 'wp_page_template',
-        'parent_id': IntegerFieldMap('wp_page_parent_id'),
+        'parent_id': 'wp_page_parent_id',
         'parent_title': 'wp_page_parent_title',
         'order': IntegerFieldMap('wp_page_order'),
-        'password': 'wp_password',
-    }
-
-    def __str__(self):
-        return self.title
+        'post_type': FieldMap('post_type', default='page'),
+    })
 
 
 class WordPressComment(WordPressBase):
