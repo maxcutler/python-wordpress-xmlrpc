@@ -21,9 +21,9 @@ class TestPosts(WordPressTestCase):
         self.assertTrue('supported' in formats)
 
     @attr('posts')
-    def test_get_recent_posts(self):
+    def test_get_posts(self):
         num_posts = 10
-        recent_posts = self.client.call(posts.GetRecentPosts(num_posts))
+        recent_posts = self.client.call(posts.GetPosts({'number': num_posts}))
         self.assert_list_of_classes(recent_posts, WordPressPost)
         self.assertTrue(len(recent_posts) <= num_posts)
 
@@ -33,12 +33,12 @@ class TestPosts(WordPressTestCase):
         post = WordPressPost()
         post.title = 'Test post'
         post.slug = 'test-post'
-        post.description = 'This is test post using the XML-RPC API.'
-        post.allow_comments = True
+        post.content = 'This is test post using the XML-RPC API.'
+        post.comment_status = 'open'
         post.user = self.userid
 
         # create the post as a draft
-        post_id = self.client.call(posts.NewPost(post, False))
+        post_id = self.client.call(posts.NewPost(post))
         self.assertTrue(post_id)
 
         # fetch the newly-created post
@@ -46,13 +46,10 @@ class TestPosts(WordPressTestCase):
         self.assertTrue(isinstance(post2, WordPressPost))
         self.assertEqual(str(post2.id), post_id)
 
-        # publish the post
-        response = self.client.call(posts.PublishPost(post_id))
-        self.assertEqual(str(response), post_id)
-
         # update the post
-        post2.description += '<br><b>Updated:</b> This post has been updated.'
-        response = self.client.call(posts.EditPost(post_id, post2, True))
+        post2.content += '<br><b>Updated:</b> This post has been updated.'
+        post2.post_status = 'publish'
+        response = self.client.call(posts.EditPost(post_id, post2))
         self.assertTrue(response)
 
         # delete the post

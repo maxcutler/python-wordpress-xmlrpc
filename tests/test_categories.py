@@ -50,7 +50,7 @@ class TestCategories(WordPressTestCase):
         post.title = 'Test Post'
         post.slug = 'test-post'
         post.user = self.userid
-        post_id = self.client.call(posts.NewPost(post, False))
+        post_id = self.client.call(posts.NewPost(post))
 
         # create a test category
         cat = WordPressCategory()

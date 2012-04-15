@@ -90,3 +90,32 @@ class DateTimeFieldMap(FieldMap):
             return self.default
         else:
             return None
+
+
+class TermsListFieldMap(FieldMap):
+    """
+    FieldMap that converts to/from WordPress objects.
+    """
+    def __init__(self, object_class, *args, **kwargs):
+        self.object_class = object_class
+        super(TermsListFieldMap, self).__init__(*args, **kwargs)
+
+    def convert_to_python(self, xmlrpc=None):
+        if xmlrpc and self.name in xmlrpc:
+            values = []
+            for value in xmlrpc.get(self.name):
+                values.append(self.object_class(value))
+            return values
+        else:
+            return []
+
+    def convert_to_xmlrpc(self, input_value):
+        if input_value:
+            values = {}
+            for term in input_value:
+                if term.taxonomy not in values:
+                    values[term.taxonomy] = []
+                values[term.taxonomy].append(int(term.id))
+            return values
+        else:
+            return None

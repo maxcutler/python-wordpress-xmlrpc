@@ -17,7 +17,7 @@ class TestComments(WordPressTestCase):
         post.title = 'Comments Test Post'
         post.slug = 'comments-test-post'
         post.user = self.userid
-        self.post_id = self.client.call(posts.NewPost(post, True))
+        self.post_id = self.client.call(posts.NewPost(post))
 
     @attr('comments')
     def test_get_comment_status_list(self):
