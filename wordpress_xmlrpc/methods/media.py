@@ -50,7 +50,7 @@ class UploadFile(AuthenticatedMethod):
             `bits`: base-64 encoded contents of the file. See xmlrpclib.Binary()
             `overwrite` (optional): flag to override an existing file with this name
 
-    Returns: `dict` with keys `file` (filename), `url` (public URL), and `type` (MIME-type).
+    Returns: `dict` with keys `id`, `file` (filename), `url` (public URL), and `type` (MIME-type).
     """
     method_name = 'wp.uploadFile'
     method_args = ('data',)

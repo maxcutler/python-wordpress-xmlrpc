@@ -182,6 +182,7 @@ class WordPressUser(WordPressBase):
 
 class WordPressMedia(WordPressBase):
     definition = {
+        'id': 'attachment_id',
         'parent': 'parent',
         'title': FieldMap('title', default=''),
         'description': 'description',
