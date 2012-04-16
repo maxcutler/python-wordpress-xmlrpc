@@ -160,7 +160,7 @@ class WordPressBlog(WordPressBase):
 
 class WordPressAuthor(WordPressBase):
     definition = {
-        'user_id': 'user_id',
+        'id': 'user_id',
         'user_login': 'user_login',
         'display_name': FieldMap('display_name', default=''),
     }
@@ -171,7 +171,7 @@ class WordPressAuthor(WordPressBase):
 
 class WordPressUser(WordPressBase):
     definition = {
-        'user_id': 'userid',
+        'id': 'userid',
         'nickname': FieldMap('nickname', default=''),
         'url': 'url',
         'first_name': 'firstname',
@@ -232,7 +232,8 @@ class WordPressPostType(WordPressBase):
         'show_in_nav_menus': 'show_in_nav_menus',
         'show_ui': 'show_ui',
         'taxonomies': 'taxonomies',
-        'is_builtin': '_builtin'
+        'is_builtin': '_builtin',
+        'supports': 'supports',
     }
 
     def __str__(self):
