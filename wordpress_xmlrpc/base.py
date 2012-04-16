@@ -52,15 +52,10 @@ class XmlrpcMethod(object):
     Child classes can override methods and properties to customize behavior:
 
     Properties:
-        `method_name`: XML-RPC method name (e.g., 'wp.getUserInfo')
-        `method_args`: Tuple of method-specific required parameters
-        `optional_args`: Tuple of method-specific optional parameters
-        `results_class`: Python class which will convert an XML-RPC response dict into an object
-
-    Methods:
-        `default_args`: Builds set of method-non-specific arguments.
-        `get_args`: Builds the final set of XML-RPC method arguments.
-        `process_results`: Performs actions on the raw result from the XML-RPC response.
+        * `method_name`: XML-RPC method name (e.g., 'wp.getUserInfo')
+        * `method_args`: Tuple of method-specific required parameters
+        * `optional_args`: Tuple of method-specific optional parameters
+        * `results_class`: Python class which will convert an XML-RPC response dict into an object
     """
     method_name = None
     method_args = tuple()

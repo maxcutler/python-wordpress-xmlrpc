@@ -7,15 +7,15 @@ class GetPosts(AuthenticatedMethod):
     Retrieve posts from the blog.
 
     Parameters:
-        `filter`: optional `dict` of filters:
-            `number`
-            `offset`
-            `orderby`
-            `order`: 'ASC' or 'DESC'
-            `post_type`: Defaults to 'post'
-            `post_status`
+       `filter`: optional `dict` of filters:
+            * `number`
+            * `offset`
+            * `orderby`
+            * `order`: 'ASC' or 'DESC'
+            * `post_type`: Defaults to 'post'
+            * `post_status`
 
-    Returns: `list` of `WordPressPost` instances.
+    Returns: `list` of :class:`WordPressPost` instances.
     """
     method_name = 'wp.getPosts'
     optional_args = ('filter', 'fields')
@@ -29,7 +29,7 @@ class GetPost(AuthenticatedMethod):
     Parameters:
         `post_id`: ID of the blog post to retrieve.
 
-    Returns: `WordPressPost` instance.
+    Returns: :class:`WordPressPost` instance.
     """
     method_name = 'wp.getPost'
     method_args = ('post_id',)
@@ -42,7 +42,7 @@ class NewPost(AuthenticatedMethod):
     Create a new post on the blog.
 
     Parameters:
-        `content`: A `WordPressPost` instance with at least the `title` and `content` values set.
+        `content`: A :class:`WordPressPost` instance with at least the `title` and `content` values set.
 
     Returns: ID of the newly-created blog post (an integer).
     """
@@ -56,7 +56,7 @@ class EditPost(AuthenticatedMethod):
 
     Parameters:
         `post_id`: ID of the blog post to edit.
-        `content`: A `WordPressPost` instance with the new values for the blog post.
+        `content`: A :class:`WordPressPost` instance with the new values for the blog post.
 
     Returns: `True` on successful edit.
     """
@@ -123,7 +123,7 @@ class GetPostTypes(AuthenticatedMethod):
     Parameters:
         None
 
-    Returns: `dict` with names as keys and `WordPressPostType` instances as values.
+    Returns: `dict` with names as keys and :class:`WordPressPostType` instances as values.
     """
     method_name = 'wp.getPostTypes'
     results_class = WordPressPostType
@@ -140,10 +140,10 @@ class GetPostType(AuthenticatedMethod):
     Retrieve an individual blog post type.
 
     Parameters:
-        `post_type_name`: Name of the blog post type to retrieve.
+        `post_type`: Name of the blog post type to retrieve.
 
-    Returns: `WordPressPostType` instance.
+    Returns: :class:`WordPressPostType` instance.
     """
     method_name = 'wp.getPostType'
-    method_args = ('post_type_name',)
+    method_args = ('post_type',)
     results_class = WordPressPostType
