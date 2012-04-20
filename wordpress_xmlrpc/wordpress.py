@@ -53,6 +53,7 @@ class WordPressPost(WordPressBase):
         'id': 'postid',
         'user': 'wp_author_id',
         'date_created': DateTimeFieldMap('dateCreated'),
+        'date_created_gmt': DateTimeFieldMap('date_created_gmt'),
         'slug': 'wp_slug',
         'post_status': 'post_status',
         'title': 'title',
