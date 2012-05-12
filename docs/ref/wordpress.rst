@@ -67,16 +67,14 @@ WordPressTaxonomy
 	Metadata for registered WordPress taxonomy.
 
 		* name
+		* label
 		* labels (`dict`)
 		* hierarchical
 		* public
-		* query_var
-		* rewrite (`dict`)
 		* show_ui
-		* show_tagcloud
-		* show_in_nav_menus
 		* cap (`dict`)
 		* is_builtin
+		* object_type (`list`)
 
 WordPressTerm
 -------------

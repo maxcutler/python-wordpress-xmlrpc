@@ -53,16 +53,14 @@ class WordPressBase(object):
 class WordPressTaxonomy(WordPressBase):
     definition = {
         'name': FieldMap('name', default=''),
+        'label': 'label',
         'labels': 'labels',
         'hierarchical': 'hierarchical',
         'public': 'public',
-        'query_var': 'query_var',
-        'rewrite': 'rewrite',
         'show_ui': 'show_ui',
-        'show_tagcloud': 'show_tagcloud',
-        'show_in_nav_menus': 'show_in_nav_menus',
         'cap': 'cap',
-        'is_builtin': '_builtin'
+        'is_builtin': '_builtin',
+        'object_type': 'object_type'
     }
 
     def __str__(self):
