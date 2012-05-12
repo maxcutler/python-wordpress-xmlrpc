@@ -94,6 +94,7 @@ For this example, let's assume that your plugin or theme has added an ``acme_pro
 	widget.post_type = 'acme_product'
 	widget.title = 'Widget'
 	widget.content = 'This is the widget's description.'
+	widget.custom_fields = []
 	widget.custom_fields.append({
 		'key': 'price',
 		'value': 2
