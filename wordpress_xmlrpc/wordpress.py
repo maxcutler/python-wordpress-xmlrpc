@@ -170,7 +170,7 @@ class WordPressAuthor(WordPressBase):
 
 class WordPressUser(WordPressBase):
     definition = {
-        'user_id': 'user_id',
+        'id': 'user_id',
         'username': 'username',
         'password': 'password',
         'role': 'role',
