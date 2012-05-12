@@ -101,6 +101,7 @@ class WordPressPost(WordPressBase):
         'comment_status': 'comment_status',
         'ping_status': 'comment_status',
         'terms': TermsListFieldMap(WordPressTerm, 'terms'),
+        'terms_names': 'terms_names',
         'custom_fields': 'custom_fields',
         'enclosure': 'enclosure',
         'password': 'post_password',
