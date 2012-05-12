@@ -8,6 +8,7 @@ History/CHANGELOG
 
 * Added missing import that was causing failures during exception handling.
 * Updated fields to match changes in WordPress 3.4 between Beta 1 and RC1.
+* Fixed some documentation bugs.
 
 2.0
 ---
