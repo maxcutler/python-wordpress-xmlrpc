@@ -1,6 +1,13 @@
 History/CHANGELOG
 =================
 
+2.1
+---
+
+(May 12, 2012)
+
+* Added missing import that was causing failures during exception handling.
+
 2.0
 ---
 
