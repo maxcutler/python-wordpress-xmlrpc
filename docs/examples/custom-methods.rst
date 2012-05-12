@@ -42,4 +42,4 @@ Again, this class can then be used with :meth:`Client.call`::
 	user_id = client.call(GetUserID())
 	# user_id == 3
 
-Note that you do not have to supply ``blog_id``, ``username``, or ``password`` to the class constructor, since these are automatically added by the `AuthenticatedMethod`. Custom method classes only require arguments specified by ``method_args`` and the optional ``optional_args``.
+Note that you do not have to supply ``blog_id``, ``username``, or ``password`` to the class constructor, since these are automatically added by `AuthenticatedMethod`. Custom method classes only require arguments specified by ``method_args`` and the optional ``optional_args``.

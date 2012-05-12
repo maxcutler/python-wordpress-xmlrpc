@@ -72,7 +72,9 @@ Most custom post types instead use post `custom fields`__ to store their additio
 
 __ http://codex.wordpress.org/Custom_Fields
 
-For this example, let's assume that your plugin or theme has added an ``acme_product`` custom post type to WordPress::
+For this example, let's assume that your plugin or theme has added an ``acme_product`` custom post type to WordPress:
+
+.. code-block:: python
 
 	# first, let's find some products
 	products = client.call(posts.GetPosts({'post_type': 'acme_product', 'number': 100}))
