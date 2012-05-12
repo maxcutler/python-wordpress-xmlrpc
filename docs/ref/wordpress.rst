@@ -51,20 +51,11 @@ WordPressPostType
 		* label
 		* labels (`dict`)
 		* cap (`dict`)
-		* capability_type
-		* description
-		* exclude_from_search
-		* has_archive
 		* hierarchical
 		* menu_icon
 		* menu_position
 		* public
-		* publicly_queryable
-		* query_var
-		* rewrite
 		* show_in_menu
-		* show_in_nav_menus
-		* show_ui
 		* taxonomies (`list`)
 		* is_builtin
 		* supports (`list`)
