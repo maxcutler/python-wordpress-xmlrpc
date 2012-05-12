@@ -44,4 +44,4 @@ class FieldConversionError(Exception):
         return repr(self)
 
     def __repr__(self):
-        return u'%s (%s)' % (self.field_name, str(self.error))
+        return self.field_name

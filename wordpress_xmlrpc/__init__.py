@@ -3,6 +3,6 @@ Library to interface with the WordPress XML-RPC API.
 
 See README for usage instructions.
 """
-from base import *
-from wordpress import *
-import methods
+from wordpress_xmlrpc.base import *
+from wordpress_xmlrpc.wordpress import *
+from . import methods

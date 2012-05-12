@@ -9,7 +9,7 @@ class GetComment(AuthenticatedMethod):
     Parameters:
         `comment_id`: ID of the comment to retrieve.
 
-    Returns: `WordPressPost` instance.
+    Returns: :class:`WordPressPost` instance.
     """
     method_name = 'wp.getComment'
     method_args = ('comment_id',)
@@ -22,12 +22,12 @@ class NewComment(AuthenticatedMethod):
 
     Parameters:
         `post_id`: The id of the post to add a comment to.
-        `comment`: A `WordPressComment` instance with at least the `content` value set.
+        `comment`: A :class:`WordPressComment` instance with at least the `content` value set.
 
     Returns: ID of the newly-created comment (an integer).
     """
     method_name = 'wp.newComment'
-    method_args = ('post_id', 'comment',)
+    method_args = ('post_id', 'comment')
 
 
 class EditComment(AuthenticatedMethod):
@@ -36,12 +36,12 @@ class EditComment(AuthenticatedMethod):
 
     Parameters:
         `comment_id`: The idea of the comment to edit.
-        `comment`: A `WordPressComment` instance with at least the `content` value set.
+        `comment`: A :class:`WordPressComment` instance with at least the `content` value set.
 
     Returns: `True` on successful edit.
     """
     method_name = 'wp.editComment'
-    method_args = ('comment_id', 'comment',)
+    method_args = ('comment_id', 'comment')
 
 
 class DeleteComment(AuthenticatedMethod):
@@ -95,14 +95,14 @@ class GetComments(AuthenticatedMethod):
     Gets a set of comments for a post.
 
     Parameters:
-        `struct`: a `dict` with the following values:
-            `post_id`: the id of the post to retrieve comments for
-            `status`: type of comments of comments to retrieve (optional, defaults to 'approve')
-            `number`: number of comments to retrieve (optional, defaults to 10)
-            `offset`: retrieval offset (optional, defaults to 0)
+        `filter`: a `dict` with the following values:
+            * `post_id`: the id of the post to retrieve comments for
+            * `status`: type of comments of comments to retrieve (optional, defaults to 'approve')
+            * `number`: number of comments to retrieve (optional, defaults to 10)
+            * `offset`: retrieval offset (optional, defaults to 0)
 
-    Returns: `list` of `WordPressComment` instances.
+    Returns: `list` of :class:`WordPressComment` instances.
     """
     method_name = 'wp.getComments'
-    method_args = ('struct',)
+    method_args = ('filter',)
     results_class = WordPressComment

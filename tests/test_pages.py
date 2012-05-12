@@ -2,7 +2,7 @@ from nose.plugins.attrib import attr
 
 from tests import WordPressTestCase
 
-from wordpress_xmlrpc.methods import pages
+from wordpress_xmlrpc.methods import pages, posts
 from wordpress_xmlrpc.wordpress import WordPressPage
 
 
@@ -21,29 +21,29 @@ class TestPages(WordPressTestCase):
 
     @attr('pages')
     def test_get_pages(self):
-        page_list = self.client.call(pages.GetPages(30))
+        page_list = self.client.call(posts.GetPosts({'post_type': 'page'}, results_class=WordPressPage))
         self.assert_list_of_classes(page_list, WordPressPage)
 
     @attr('pages')
     def test_page_lifecycle(self):
         page = WordPressPage()
         page.title = 'Test Page'
-        page.description = 'This is my test page.'
+        page.content = 'This is my test page.'
 
         # create the page
-        page_id = self.client.call(pages.NewPage(page, True))
+        page_id = self.client.call(posts.NewPost(page))
         self.assertTrue(page_id)
 
         # fetch the newly created page
-        page2 = self.client.call(pages.GetPage(page_id))
+        page2 = self.client.call(posts.GetPost(page_id, results_class=WordPressPage))
         self.assertTrue(isinstance(page2, WordPressPage))
         self.assertEqual(str(page2.id), page_id)
 
         # edit the page
-        page2.description += '<br><b>Updated:</b> This page has been updated.'
-        response = self.client.call(pages.EditPage(page_id, page2, True))
+        page2.content += '<br><b>Updated:</b> This page has been updated.'
+        response = self.client.call(posts.EditPost(page_id, page2))
         self.assertTrue(response)
 
         # delete the page
-        response = self.client.call(pages.DeletePage(page_id))
+        response = self.client.call(posts.DeletePost(page_id))
         self.assertTrue(response)

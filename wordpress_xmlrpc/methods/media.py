@@ -8,14 +8,14 @@ class GetMediaLibrary(AuthenticatedMethod):
 
     Parameters:
         `filter`: `dict` with optional keys:
-            `number`: number of media items to retrieve
-            `offset`: query offset
-            `parent_id`: ID of post the media item is attached to.
+            * `number`: number of media items to retrieve
+            * `offset`: query offset
+            * `parent_id`: ID of post the media item is attached to.
                          Use empty string (default) to show all media items.
                          Use `0` to show unattached media items.
-            `mime_type`: file mime-type to filter by (e.g., 'image/jpeg')
+            * `mime_type`: file mime-type to filter by (e.g., 'image/jpeg')
 
-    Returns: `list` of `WordPressMedia` instances.
+    Returns: `list` of :class:`WordPressMedia` instances.
     """
     method_name = 'wp.getMediaLibrary'
     method_args = ('filter',)
@@ -29,8 +29,7 @@ class GetMediaItem(AuthenticatedMethod):
     Parameters:
         `attachment_id`: ID of the media item.
 
-    Returns:
-        ??
+    Returns: :class:`WordPressMedia` instance.
     """
     method_name = 'wp.getMediaItem'
     method_args = ('attachment_id',)
@@ -45,12 +44,12 @@ class UploadFile(AuthenticatedMethod):
 
     Parameters:
         `data`: `dict` with three items:
-            `name`: filename
-            `type`: MIME-type of the file
-            `bits`: base-64 encoded contents of the file. See xmlrpclib.Binary()
-            `overwrite` (optional): flag to override an existing file with this name
+            * `name`: filename
+            * `type`: MIME-type of the file
+            * `bits`: base-64 encoded contents of the file. See xmlrpclib.Binary()
+            * `overwrite` (optional): flag to override an existing file with this name
 
-    Returns: `dict` with keys `file` (filename), `url` (public URL), and `type` (MIME-type).
+    Returns: `dict` with keys `id`, `file` (filename), `url` (public URL), and `type` (MIME-type).
     """
     method_name = 'wp.uploadFile'
     method_args = ('data',)

@@ -1,4 +1,5 @@
-from .fieldmaps import FieldMap, IntegerFieldMap, DateTimeFieldMap
+import sys
+from .fieldmaps import FieldMap, IntegerFieldMap, DateTimeFieldMap, TermsListFieldMap
 from wordpress_xmlrpc.exceptions import FieldConversionError
 
 
@@ -28,9 +29,10 @@ class WordPressBase(object):
             # convert and store the value on this instance if non-empty
             try:
                 converted_value = self._def[key].convert_to_python(xmlrpc)
-            except Exception, e:
+            except Exception:
+                e = sys.exc_info()[1]
                 raise FieldConversionError(key, e)
-            if converted_value:
+            if converted_value is not None:
                 setattr(self, key, converted_value)
 
     @property
@@ -48,62 +50,77 @@ class WordPressBase(object):
         return '<%s: %s>' % (self.__class__.__name__, unicode(self).encode('utf-8'))
 
 
+class WordPressTaxonomy(WordPressBase):
+    definition = {
+        'name': FieldMap('name', default=''),
+        'label': 'label',
+        'labels': 'labels',
+        'hierarchical': 'hierarchical',
+        'public': 'public',
+        'show_ui': 'show_ui',
+        'cap': 'cap',
+        'is_builtin': '_builtin',
+        'object_type': 'object_type'
+    }
+
+    def __str__(self):
+        return self.name
+
+
+class WordPressTerm(WordPressBase):
+    definition = {
+        'id': 'term_id',
+        'group': 'term_group',
+        'taxonomy': 'taxonomy',
+        'taxonomy_id': 'term_taxonomy_id',
+        'name': FieldMap('name', default=''),
+        'slug': 'slug',
+        'description': 'description',
+        'parent': 'parent',
+        'count': IntegerFieldMap('count')
+    }
+
+    def __str__(self):
+        return self.name
+
+
 class WordPressPost(WordPressBase):
     definition = {
-        'id': 'postid',
-        'user': 'wp_author_id',
-        'date_created': DateTimeFieldMap('dateCreated'),
-        'date_created_gmt': DateTimeFieldMap('date_created_gmt'),
-        'slug': 'wp_slug',
+        'id': 'post_id',
+        'user': 'post_author',
+        'date': DateTimeFieldMap('post_date_gmt'),
+        'date_modified': DateTimeFieldMap('post_modified_gmt'),
+        'slug': 'post_name',
         'post_status': 'post_status',
-        'title': 'title',
-        'description': 'description',
-        'excerpt': 'mt_excerpt',
-        'extended_text': 'mt_text_more',
+        'title': FieldMap('post_title', default='Untitled'),
+        'content': 'post_content',
+        'excerpt': 'post_excerpt',
         'link': 'link',
-        'permalink': 'permaLink',
-        'allow_comments': IntegerFieldMap('mt_allow_comments'),
-        'allow_pings': IntegerFieldMap('mt_allow_pings'),
-        'tags': 'mt_keywords',
-        'categories': 'categories',
+        'comment_status': 'comment_status',
+        'ping_status': 'comment_status',
+        'terms': TermsListFieldMap(WordPressTerm, 'terms'),
+        'terms_names': 'terms_names',
         'custom_fields': 'custom_fields',
+        'enclosure': 'enclosure',
+        'password': 'post_password',
+        'post_format': 'post_format',
+        'thumbnail': 'post_thumbnail',
+        'sticky': 'sticky',
         'post_type': FieldMap('post_type', default='post'),
-        'password': 'wp_password',
-        'post_format': 'wp_post_format',
     }
 
     def __str__(self):
         return self.title
 
 
-class WordPressPage(WordPressBase):
-    definition = {
-        'id': 'page_id',
-        'user': 'wp_author_id',
-        'author': 'wp_author_display_name',
-        'date_created': DateTimeFieldMap('dateCreated'),
-        'slug': 'wp_slug',
-        'page_status': 'page_status',
-        'title': 'title',
-        'description': 'description',
-        'excerpt': 'excerpt',
-        'extended_text': 'text_more',
-        'link': 'link',
-        'permalink': 'permaLink',
-        'allow_comments': IntegerFieldMap('mt_allow_comments'),
-        'allow_pings': IntegerFieldMap('mt_allow_pings'),
-        'tags': 'mt_keywords',
-        'categories': 'categories',
-        'custom_fields': 'custom_fields',
+class WordPressPage(WordPressPost):
+    definition = dict(WordPressPost.definition, **{
         'template': 'wp_page_template',
-        'parent_id': IntegerFieldMap('wp_page_parent_id'),
+        'parent_id': 'wp_page_parent_id',
         'parent_title': 'wp_page_parent_title',
         'order': IntegerFieldMap('wp_page_order'),
-        'password': 'wp_password',
-    }
-
-    def __str__(self):
-        return self.title
+        'post_type': FieldMap('post_type', default='page'),
+    })
 
 
 class WordPressComment(WordPressBase):
@@ -115,7 +132,7 @@ class WordPressComment(WordPressBase):
         'parent': 'comment_parent',
         'date_created': DateTimeFieldMap('dateCreated'),
         'status': 'status',
-        'content': 'content',
+        'content': FieldMap('content', default=''),
         'link': 'link',
         'author': 'author',
         'author_url': 'author_url',
@@ -130,7 +147,7 @@ class WordPressComment(WordPressBase):
 class WordPressBlog(WordPressBase):
     definition = {
         'id': 'blogid',
-        'name': 'blogName',
+        'name': FieldMap('blogName', default=''),
         'url': 'url',
         'xmlrpc': 'xmlrpc',
         'is_admin': FieldMap('isAdmin', default=False),
@@ -142,9 +159,9 @@ class WordPressBlog(WordPressBase):
 
 class WordPressAuthor(WordPressBase):
     definition = {
-        'user_id': 'user_id',
+        'id': 'user_id',
         'user_login': 'user_login',
-        'display_name': 'display_name',
+        'display_name': FieldMap('display_name', default=''),
     }
 
     def __str__(self):
@@ -175,38 +192,11 @@ class WordPressUser(WordPressBase):
         return self.nickname
 
 
-class WordPressCategory(WordPressBase):
-    definition = {
-        'cat_id': 'categoryId',
-        'parent_id': FieldMap('parentId', ['parentId', 'parent_id']),
-        'name': FieldMap('categoryName', ['categoryName', 'name']),
-        'description': 'categoryDescription',
-        'url': 'htmlUrl',
-        'rss': 'rssUrl',
-    }
-
-    def __str__(self):
-        return self.name
-
-
-class WordPressTag(WordPressBase):
-    definition = {
-        'tag_id': 'tag_id',
-        'name': 'name',
-        'count': 'count',
-        'slug': 'slug',
-        'url': 'html_url',
-        'rss': 'rss_url',
-    }
-
-    def __str__(self):
-        return self.name
-
-
 class WordPressMedia(WordPressBase):
     definition = {
+        'id': 'attachment_id',
         'parent': 'parent',
-        'title': 'title',
+        'title': FieldMap('title', default=''),
         'description': 'description',
         'caption': 'caption',
         'date_created': DateTimeFieldMap('date_created_gmt'),
@@ -221,9 +211,9 @@ class WordPressMedia(WordPressBase):
 
 class WordPressOption(WordPressBase):
     definition = {
-        'name': 'name',
+        'name': FieldMap('name', default=''),
         'description': 'desc',
-        'value': 'value',
+        'value': FieldMap('value', default=''),
         'read_only': FieldMap('readonly', default=False),
     }
 
@@ -231,64 +221,21 @@ class WordPressOption(WordPressBase):
         return '%s="%s"' % (self.name, self.value)
 
 
-class WordPressTaxonomy(WordPressBase):
-    definition = {
-        'name': 'name',
-        'labels': 'labels',
-        'hierarchical': 'hierarchical',
-        'public': 'public',
-        'query_var': 'query_var',
-        'rewrite': 'rewrite',
-        'show_ui': 'show_ui',
-        'show_tagcloud': 'show_tagcloud',
-        'show_in_nav_menus': 'show_in_nav_menus',
-        'cap': 'cap',
-        'is_builtin': '_builtin'
-    }
-
-    def __str__(self):
-        return self.name
-
-
-class WordPressTerm(WordPressBase):
-    definition = {
-        'term_id': 'term_id',
-        'group': 'term_group',
-        'taxonomy': 'taxonomy',
-        'taxonomy_id': 'term_taxonomy_id',
-        'name': 'name',
-        'slug': 'slug',
-        'description': 'description',
-        'parent': 'parent',
-        'count': IntegerFieldMap('count')
-    }
-
-    def __str__(self):
-        return self.name
-
-
 class WordPressPostType(WordPressBase):
     definition = {
         'name': 'name',
-        'label': 'label',
+        'label': FieldMap('label', default=''),
         'labels': 'labels',
         'cap': 'cap',
-        'capability_type': 'capability_type',
-        'description': 'description',
-        'exclude_from_search': 'exclude_from_search',
-        'has_archive': 'has_archive',
+        'map_meta_cap': 'map_meta_cap',
         'hierarchical': 'hierarchical',
         'menu_icon': 'menu_icon',
         'menu_position': 'menu_position',
         'public': 'public',
-        'publicly_queryable': 'publicly_queryable',
-        'query_var': 'query_var',
-        'rewrite': 'rewrite',
         'show_in_menu': 'show_in_menu',
-        'show_in_nav_menus': 'show_in_nav_menus',
-        'show_ui': 'show_ui',
         'taxonomies': 'taxonomies',
-        'is_builtin': '_builtin'
+        'is_builtin': '_builtin',
+        'supports': 'supports',
     }
 
     def __str__(self):

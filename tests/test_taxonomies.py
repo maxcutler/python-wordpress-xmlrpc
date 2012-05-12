@@ -60,23 +60,23 @@ class TestTaxonomies(WordPressTestCase):
         # create the term
         term_id = self.client.call(taxonomies.NewTerm(term))
         self.assertTrue(term_id)
-        term.term_id = term_id
+        term.id = term_id
 
         # re-fetch to verify
-        term2 = self.client.call(taxonomies.GetTerm(term.taxonomy, term.term_id))
+        term2 = self.client.call(taxonomies.GetTerm(term.taxonomy, term.id))
         self.assertEqual(term.name, term2.name)
 
         # set a description and save
         term.description = "My test term"
-        response = self.client.call(taxonomies.EditTerm(term.term_id, term))
+        response = self.client.call(taxonomies.EditTerm(term.id, term))
         self.assertTrue(response)
 
         # re-fetch to verify
-        term3 = self.client.call(taxonomies.GetTerm(term.taxonomy, term.term_id))
+        term3 = self.client.call(taxonomies.GetTerm(term.taxonomy, term.id))
         self.assertEqual(term.description, term3.description)
 
         # delete the term
-        response = self.client.call(taxonomies.DeleteTerm(term.taxonomy, term.term_id))
+        response = self.client.call(taxonomies.DeleteTerm(term.taxonomy, term.id))
         self.assertTrue(response)
 
     @attr('taxonomies')
@@ -88,21 +88,57 @@ class TestTaxonomies(WordPressTestCase):
 
         parent_id = self.client.call(taxonomies.NewTerm(parent))
         self.assertTrue(parent_id)
-        parent.term_id = parent_id
+        parent.id = parent_id
 
         child = WordPressTerm()
         child.taxonomy = parent.taxonomy
         child.name = 'Test Child Term'
-        child.parent = parent.term_id
+        child.parent = parent.id
 
         child_id = self.client.call(taxonomies.NewTerm(child))
         self.assertTrue(child_id)
-        child.term_id = child_id
+        child.id = child_id
 
-        # re-fetch to verify
-        child2 = self.client.call(taxonomies.GetTerm(child.taxonomy, child.term_id))
-        self.assertEqual(child.parent, int(child2.parent))
+        try:
+            # re-fetch to verify
+            child2 = self.client.call(taxonomies.GetTerm(child.taxonomy, child.id))
+            self.assertEqual(child.parent, child2.parent)
+        finally:
+            # cleanup
+            self.client.call(taxonomies.DeleteTerm(child.taxonomy, child.id))
+            self.client.call(taxonomies.DeleteTerm(parent.taxonomy, parent.id))
 
-        # cleanup
-        self.client.call(taxonomies.DeleteTerm(child.taxonomy, child.term_id))
-        self.client.call(taxonomies.DeleteTerm(parent.taxonomy, parent.term_id))
+    @attr('taxonomies')
+    @attr('terms')
+    def test_term_search(self):
+        tag1 = WordPressTerm()
+        tag1.taxonomy = 'post_tag'
+        tag1.name = 'Test FoobarA'
+
+        tag1_id = self.client.call(taxonomies.NewTerm(tag1))
+        self.assertTrue(tag1_id)
+        tag1.id = tag1_id
+
+        tag2 = WordPressTerm()
+        tag2.taxonomy = 'post_tag'
+        tag2.name = 'Test FoobarB'
+
+        tag2_id = self.client.call(taxonomies.NewTerm(tag2))
+        self.assertTrue(tag2_id)
+        tag2.id = tag2_id
+
+        try:
+            results = self.client.call(taxonomies.GetTerms('post_tag', {'search': 'foobarb'}))
+            found_tag1 = False
+            found_tag2 = False
+            for tag in results:
+                if tag.id == tag1_id:
+                    found_tag1 = True
+                elif tag.id == tag2_id:
+                    found_tag2 = True
+            self.assertFalse(found_tag1)
+            self.assertTrue(found_tag2)
+        finally:
+            # cleanup
+            self.client.call(taxonomies.DeleteTerm(tag1.taxonomy, tag1.id))
+            self.client.call(taxonomies.DeleteTerm(tag2.taxonomy, tag2.id))

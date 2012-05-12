@@ -10,7 +10,7 @@ class GetUserInfo(AuthenticatedMethod):
     Parameters:
         None
 
-    Returns: instance of `WordPressUser` representing the user whose credentials are being used with the XML-RPC API.
+    Returns: instance of :class:`WordPressUser` representing the user whose credentials are being used with the XML-RPC API.
     """
     method_name = 'wp.getUserInfo'
     results_class = WordPressUser
@@ -23,11 +23,14 @@ class GetUsersBlogs(AuthenticatedMethod):
     Parameters:
         None
 
-    Returns: `list` of `WordPressBlog` instances.
+    Returns: `list` of :class:`WordPressBlog` instances.
     """
     method_name = 'wp.getUsersBlogs'
-    requires_blog = False
     results_class = WordPressBlog
+
+    def get_args(self, client):
+        # strip off first (blog_id) parameter
+        return super(GetUsersBlogs, self).get_args(client)[1:]
 
 
 class GetAuthors(AuthenticatedMethod):
@@ -37,7 +40,7 @@ class GetAuthors(AuthenticatedMethod):
     Parameters:
         None
 
-    Returns: `list` of `WordPressAuthor` instances.
+    Returns: `list` of :class:`WordPressAuthor` instances.
     """
     method_name = 'wp.getAuthors'
     results_class = WordPressAuthor
