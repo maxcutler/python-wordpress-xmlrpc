@@ -60,6 +60,11 @@ methods.users
 	.. autoclass:: GetUserInfo()
 	.. autoclass:: GetUsersBlogs()
 	.. autoclass:: GetAuthors()
+	.. autoclass:: GetUsers([filter, fields])
+	.. autoclass:: GetUser(user_id[, fields])
+	.. autoclass:: NewUser(user)
+	.. autoclass:: EditUser(user_id, user)
+	.. autoclass:: DeleteUser(user_id[, reassign_id])
 
 methods.media
 -------------

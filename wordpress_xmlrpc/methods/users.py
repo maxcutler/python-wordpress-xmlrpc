@@ -51,10 +51,14 @@ class GetUsers(AuthenticatedMethod):
     Retrieve list of users in the blog.
 
     Parameters:
-        `filter`: (optional) `dict` of filters to modify the query. Valid keys are 'number', 'offset', and 'role'.
-        `fields`: (optional) `list` of fields to return. Specific fields, or groups 'basic' or 'all'.
+        `filter`: optional `dict` of filters:
+            * `number`
+            * `offset`
+            * `role`
 
-    Returns: `list` of `WordPressUser` instances.
+        `fields`: optional `list` of fields to return. Specific fields, or groups 'basic' or 'all'.
+
+    Returns: `list` of :class:`WordPressUser` instances.
     """
     method_name = 'wp.getUsers'
     optional_args = ('filter', 'fields')
@@ -69,7 +73,7 @@ class GetUser(AuthenticatedMethod):
         `user_id`: ID of the user
         `fields`: (optional) `list` of fields to return. Specific fields, or groups 'basic' or 'all'.
 
-    Returns: `WordPressUser` instance.
+    Returns: :class:`WordPressUser` instance.
     """
     method_name = 'wp.getUser'
     method_args = ('user_id',)
@@ -82,7 +86,7 @@ class NewUser(AuthenticatedMethod):
     Create new user on the blog.
 
     Parameters:
-        `user`: A `WordPressUser` instance with at least `username`, `password`, and `email`.
+        `user`: A :class:`WordPressUser` instance with at least `username`, `password`, and `email`.
         `send_mail`: (optional) Send a confirmation email to the new user.
 
     Returns: ID of the newly-created blog user (an integer).

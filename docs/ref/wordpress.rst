@@ -121,10 +121,21 @@ WordPressUser
 	Basic representation of a WordPress user.
 
 		* id
+		* username
+		* password
+		* role
 		* nickname
 		* url
 		* first_name
 		* last_name
+		* registered
+		* bio
+		* email
+		* nicename
+		* display_name
+		* capabilities
+		* user_level
+		* user_contacts
 
 WordPressComment
 ----------------
