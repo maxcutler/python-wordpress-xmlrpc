@@ -67,3 +67,39 @@ class TestPosts(WordPressTestCase):
     def test_get_post_type(self):
         post_type = self.client.call(posts.GetPostType('post'))
         self.assertTrue(isinstance(post_type, WordPressPostType))
+
+    @attr('posts')
+    @attr('revisions')
+    def test_revisions(self):
+        original_title = 'Revisions test'
+        post = WordPressPost()
+        post.title = original_title
+        post.slug = 'revisions-test'
+        post.content = 'This is a test post using the XML-RPC API.'
+        post_id = self.client.call(posts.NewPost(post))
+        self.assertTrue(post_id)
+
+        post.title = 'Revisions test updated'
+        post.content += ' This is a second revision.'
+        response = self.client.call(posts.EditPost(post_id, post))
+        self.assertTrue(response)
+
+        # test wp.getRevisions
+        revision_list = self.client.call(posts.GetRevisions(post_id, ['post']))
+        self.assert_list_of_classes(revision_list, WordPressPost)
+
+        # workaround for WP bug #22686/22687
+        # an auto-draft revision will survive wp.newPost, so pick the 2nd revision
+        self.assertEqual(2, len(revision_list))
+        real_rev = revision_list[1]
+        self.assertTrue(real_rev)
+        self.assertNotEquals(post_id, real_rev.id)
+
+        # test wp.restoreRevision
+        response2 = self.client.call(posts.RestoreRevision(real_rev.id))
+        self.assertTrue(response2)
+        post2 = self.client.call(posts.GetPost(post_id))
+        self.assertEquals(original_title, post2.title)
+
+        # cleanup
+        self.client.call(posts.DeletePost(post_id))

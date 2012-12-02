@@ -147,3 +147,31 @@ class GetPostType(AuthenticatedMethod):
     method_name = 'wp.getPostType'
     method_args = ('post_type',)
     results_class = WordPressPostType
+
+
+class GetRevisions(AuthenticatedMethod):
+    """
+    Retrieve all revisions of a post.
+
+    Parameters:
+        `post_id`: ID of the post.
+
+    Returns: `list` of :class:`WordPressPost` instances.
+    """
+    method_name = 'wp.getRevisions'
+    method_args = ('post_id',)
+    optional_args = ('fields',)
+    results_class = WordPressPost
+
+
+class RestoreRevision(AuthenticatedMethod):
+    """
+    Restores a post to a previous revision.
+
+    Parameters:
+        `revision_id`: ID of the revision to revert to.
+
+    Returns: `True` on successful reversion.
+    """
+    method_name = 'wp.restoreRevision'
+    method_args = ('revision_id',)
