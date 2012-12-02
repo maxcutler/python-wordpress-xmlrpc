@@ -107,6 +107,10 @@ class WordPressPost(WordPressBase):
         'thumbnail': 'post_thumbnail',
         'sticky': 'sticky',
         'post_type': FieldMap('post_type', default='post'),
+        'parent_id': 'post_parent',
+        'menu_order': IntegerFieldMap('menu_order'),
+        'guid': 'guid',
+        'mime_type': 'post_mime_type',
     }
 
     def __str__(self):
@@ -116,9 +120,6 @@ class WordPressPost(WordPressBase):
 class WordPressPage(WordPressPost):
     definition = dict(WordPressPost.definition, **{
         'template': 'wp_page_template',
-        'parent_id': 'wp_page_parent_id',
-        'parent_title': 'wp_page_parent_title',
-        'order': IntegerFieldMap('wp_page_order'),
         'post_type': FieldMap('post_type', default='page'),
     })
 
