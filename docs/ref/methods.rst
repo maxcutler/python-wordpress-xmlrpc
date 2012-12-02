@@ -56,8 +56,11 @@ methods.users
 -------------
 
 .. automodule:: wordpress_xmlrpc.methods.users
-	
-	.. autoclass:: GetUserInfo()
+
+	.. autoclass:: GetUser(user_id[, fields])
+	.. autoclass:: GetUsers([filter, fields])
+	.. autoclass:: GetProfile()
+	.. autoclass:: EditProfile(user)
 	.. autoclass:: GetUsersBlogs()
 	.. autoclass:: GetAuthors()
 
