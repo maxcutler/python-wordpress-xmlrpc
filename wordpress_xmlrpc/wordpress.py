@@ -131,7 +131,7 @@ class WordPressComment(WordPressBase):
         'post': 'post_id',
         'post_title': 'post_title',
         'parent': 'comment_parent',
-        'date_created': DateTimeFieldMap('dateCreated'),
+        'date_created': DateTimeFieldMap('date_created_gmt'),
         'status': 'status',
         'content': FieldMap('content', default=''),
         'link': 'link',
