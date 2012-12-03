@@ -15,3 +15,9 @@ try:
     from ConfigParser import ConfigParser  # py2.x
 except ImportError:
     from configparser import ConfigParser  # py3.x
+
+try:
+    unicode('test')
+except NameError:
+    def unicode(s):
+        return s
