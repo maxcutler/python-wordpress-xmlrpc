@@ -9,6 +9,12 @@ from wordpress_xmlrpc.wordpress import WordPressPage
 class TestPages(WordPressTestCase):
 
     @attr('pages')
+    @attr('pycompat')
+    def test_page_repr(self):
+        page = WordPressPage()
+        repr(page)
+
+    @attr('pages')
     def test_get_page_status_list(self):
         status_list = self.client.call(pages.GetPageStatusList())
         self.assertTrue(isinstance(status_list, dict))

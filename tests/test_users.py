@@ -9,6 +9,18 @@ from wordpress_xmlrpc.wordpress import WordPressUser, WordPressBlog, WordPressAu
 class TestUsers(WordPressTestCase):
 
     @attr('users')
+    @attr('pycompat')
+    def test_user_repr(self):
+        user = WordPressUser()
+        repr(user)
+
+    @attr('users')
+    @attr('pycompat')
+    def test_author_repr(self):
+        author = WordPressAuthor()
+        repr(author)
+
+    @attr('users')
     def test_get_user(self):
         user = self.client.call(users.GetUser(self.userid))
         self.assertTrue(isinstance(user, WordPressUser))

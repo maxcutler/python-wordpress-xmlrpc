@@ -9,6 +9,12 @@ from wordpress_xmlrpc.wordpress import WordPressPost, WordPressPostType
 class TestPosts(WordPressTestCase):
 
     @attr('posts')
+    @attr('pycompat')
+    def test_post_repr(self):
+        post = WordPressPost()
+        repr(post)
+
+    @attr('posts')
     def test_get_post_status_list(self):
         status_list = self.client.call(posts.GetPostStatusList())
         self.assertTrue(isinstance(status_list, dict))

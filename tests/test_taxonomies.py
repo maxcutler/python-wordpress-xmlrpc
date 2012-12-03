@@ -9,6 +9,18 @@ from wordpress_xmlrpc.wordpress import WordPressTaxonomy, WordPressTerm
 class TestTaxonomies(WordPressTestCase):
 
     @attr('taxonomies')
+    @attr('pycompat')
+    def test_taxonomy_repr(self):
+        tax = WordPressTaxonomy()
+        repr(tax)
+
+    @attr('taxonomies')
+    @attr('pycompat')
+    def test_term_repr(self):
+        term = WordPressTerm()
+        repr(term)
+
+    @attr('taxonomies')
     def test_get_taxonomies(self):
         taxs = self.client.call(taxonomies.GetTaxonomies())
         self.assert_list_of_classes(taxs, WordPressTaxonomy)
