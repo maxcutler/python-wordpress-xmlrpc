@@ -29,9 +29,14 @@ class NewComment(AuthenticatedMethod):
     method_name = 'wp.newComment'
     method_args = ('post_id', 'comment')
 
+
 class NewAnonymousComment(AnonymousMethod):
     """
     Create a new comment on a post without authenticating.
+
+    NOTE: Requires support on the blog by setting the following filter in a plugin or theme:
+
+        add_filter( 'xmlrpc_allow_anonymous_comments', '__return_true' );
 
     Parameters:
         `post_id`: The id of the post to add a comment to.
@@ -40,7 +45,7 @@ class NewAnonymousComment(AnonymousMethod):
     Returns: ID of the newly-created comment (an integer).
     """
     method_name = 'wp.newComment'
-    method_args = ('post_id', 'comment')    
+    method_args = ('post_id', 'comment')
 
 
 class EditComment(AuthenticatedMethod):

@@ -47,6 +47,7 @@ methods.comments
 	.. autoclass:: GetComments(filter)
 	.. autoclass:: GetComment(comment_id)
 	.. autoclass:: NewComment(post_id, comment)
+	.. autoclass:: NewAnonymousComment(post_id, comment)
 	.. autoclass:: EditComment(comment_id, comment)
 	.. autoclass:: DeleteComment(commend_id)
 	.. autoclass:: GetCommentStatusList()
