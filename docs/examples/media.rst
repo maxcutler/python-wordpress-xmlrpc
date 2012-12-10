@@ -23,7 +23,7 @@ The :class:`wordpress_xmlrpc.methods.media.UploadFile` method can be used to upl
 
 	# read the binary file and let the XMLRPC library encode it into base64
 	with open(filename, 'rb') as img:
-		data['bits'] = xmlrpc_clent.Binary(img.read())
+		data['bits'] = xmlrpc_client.Binary(img.read())
 
 	response = client.call(media.UploadFile(data))
 	# response == {
@@ -40,7 +40,7 @@ This newly-uploaded attachment can then be set as the thumbnail for a post::
 	post.title = 'Picture of the Day'
 	post.content = 'What a lovely picture today!'
 	post.post_status = 'publish'
-	post.post_thumbnail = attachment_id
+	post.thumbnail = attachment_id
 	post.id = client.call(posts.NewPost(post))
 
 .. note::

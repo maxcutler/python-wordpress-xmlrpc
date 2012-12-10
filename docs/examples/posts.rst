@@ -11,6 +11,10 @@ __ http://codex.wordpress.org/XML-RPC_WordPress_API/Posts
 
 For consistency, the same approach is adopted by python-wordpress-xmlrpc.
 
+.. note::
+
+	Posts will be sent as drafts by default. If you want to publish a post, set `post.post_status = 'publish'`.
+
 Normal Posts
 ------------
 

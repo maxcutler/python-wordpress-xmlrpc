@@ -35,7 +35,7 @@ class GetTerms(AuthenticatedMethod):
 
     Parameters:
         `taxonomy`: name of the taxonomy
-        
+
         `filter`: optional `dict` of filters:
             * `number`
             * `offset`

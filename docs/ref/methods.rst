@@ -47,6 +47,7 @@ methods.comments
 	.. autoclass:: GetComments(filter)
 	.. autoclass:: GetComment(comment_id)
 	.. autoclass:: NewComment(post_id, comment)
+	.. autoclass:: NewAnonymousComment(post_id, comment)
 	.. autoclass:: EditComment(comment_id, comment)
 	.. autoclass:: DeleteComment(commend_id)
 	.. autoclass:: GetCommentStatusList()
@@ -56,8 +57,11 @@ methods.users
 -------------
 
 .. automodule:: wordpress_xmlrpc.methods.users
-	
-	.. autoclass:: GetUserInfo()
+
+	.. autoclass:: GetUser(user_id[, fields])
+	.. autoclass:: GetUsers([filter, fields])
+	.. autoclass:: GetProfile()
+	.. autoclass:: EditProfile(user)
 	.. autoclass:: GetUsersBlogs()
 	.. autoclass:: GetAuthors()
 	.. autoclass:: GetUsers([filter, fields])

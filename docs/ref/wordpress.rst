@@ -123,7 +123,7 @@ WordPressUser
 		* id
 		* username
 		* password
-		* role
+		* roles
 		* nickname
 		* url
 		* first_name
@@ -133,9 +133,6 @@ WordPressUser
 		* email
 		* nicename
 		* display_name
-		* capabilities
-		* user_level
-		* user_contacts
 
 WordPressComment
 ----------------

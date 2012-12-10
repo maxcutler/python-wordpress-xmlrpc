@@ -9,6 +9,12 @@ from wordpress_xmlrpc.wordpress import WordPressOption
 class TestOptions(WordPressTestCase):
 
     @attr('options')
+    @attr('pycompat')
+    def test_option_repr(self):
+        option = WordPressOption()
+        repr(option)
+
+    @attr('options')
     def test_get_all_options(self):
         opts = self.client.call(options.GetOptions([]))
         self.assert_list_of_classes(opts, WordPressOption)

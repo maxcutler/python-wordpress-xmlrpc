@@ -20,6 +20,12 @@ class TestComments(WordPressTestCase):
         self.post_id = self.client.call(posts.NewPost(post))
 
     @attr('comments')
+    @attr('pycompat')
+    def test_comment_repr(self):
+        comment = WordPressComment()
+        repr(comment)
+
+    @attr('comments')
     def test_get_comment_status_list(self):
         status_list = self.client.call(comments.GetCommentStatusList())
         self.assertTrue(isinstance(status_list, dict))

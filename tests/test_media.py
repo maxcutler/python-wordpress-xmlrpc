@@ -12,6 +12,12 @@ from wordpress_xmlrpc.wordpress import WordPressMedia
 class TestMedia(WordPressTestCase):
 
     @attr('media')
+    @attr('pycompat')
+    def test_media_repr(self):
+        media = WordPressMedia()
+        repr(media)
+
+    @attr('media')
     def test_get_media_library(self):
         num_items = 10
         library = self.client.call(media.GetMediaLibrary({'number': num_items}))
