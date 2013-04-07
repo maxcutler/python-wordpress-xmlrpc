@@ -65,7 +65,7 @@ And here's how to create and edit a page::
 
 	# no longer aspiring
 	page.content = 'I am a WordPress and Python developer.'
-	client.call(posts.EditPost(page))
+	client.call(posts.EditPost(page.id, page))
 
 Custom Post Types
 -----------------
