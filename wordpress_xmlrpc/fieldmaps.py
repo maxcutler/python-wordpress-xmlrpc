@@ -85,7 +85,20 @@ class DateTimeFieldMap(FieldMap):
                 raw_value = xmlrpc_client.DateTime(raw_value)
 
             # extract its timetuple and convert to datetime
-            tt = raw_value.timetuple()
+            try:
+                tt = raw_value.timetuple()
+            except ValueError:
+                # Workaround for a combination of Python and WordPress bug
+                # which would return a null date for Draft posts. This is not
+                # the case for recent versions of WP, but drafts created a that
+                # time still have a null date.
+                # The python bug is http://bugs.python.org/issue2623 and
+                # affects xmlrpclib when fed a timezone aware DateTime
+                if str(raw_value) == "00000000T00:00:00Z":
+                    raw_value = xmlrpc_client.DateTime("00010101T00:00:00")
+                    tt = raw_value.timetuple()
+                else:
+                    raise
             return datetime.datetime(*tuple(tt)[:6])
         elif self.default:
             return self.default
