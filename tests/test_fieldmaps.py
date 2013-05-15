@@ -34,3 +34,12 @@ class FieldMapsTestCase(unittest.TestCase):
             'dateCreated': xmlrpc_client.DateTime('-0001113TT0::0::00'),
         }
         self.assertRaises(FieldConversionError, SampleModel, response)
+
+    @attr('fieldmaps')
+    def test_empty_date_with_timezone_is_accepted(self):
+        response = {
+            'dateCreated': xmlrpc_client.DateTime('00000000T00:00:00Z'),
+        }
+        obj = SampleModel(response)
+        self.assertTrue(hasattr(obj, 'date_created'))
+        self.assertEqual(obj.date_created, datetime.datetime(1, 1, 1, 0, 0))
