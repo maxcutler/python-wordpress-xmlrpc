@@ -17,7 +17,7 @@ class ProxiedTransport(xmlrpc_client.Transport):
         connection.putheader('Host', self.realhost)
 
 
-class Client_Proxied(object):
+class Client(object):
     """
     Connection to a WordPress XML-RPC API endpoint.
 
