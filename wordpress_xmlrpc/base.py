@@ -1,11 +1,23 @@
 import collections
 import sys
-
+import httplib
 from wordpress_xmlrpc.compat import xmlrpc_client, dict_type
 from wordpress_xmlrpc.exceptions import ServerConnectionError, UnsupportedXmlrpcMethodError, InvalidCredentialsError, XmlrpcDisabledError
 
+class ProxiedTransport(xmlrpc_client.Transport):
+    def set_proxy(self, proxy):
+        self.proxy = proxy
+    def make_connection(self, host):
+    	self.realhost = host
+		h = httplib.HTTPConnection(self.proxy)
+		return h
+    def send_request(self, connection, handler, request_body):
+		connection.putrequest("POST", 'http://%s%s' % (self.realhost, handler))
+    def send_host(self, connection, host):
+        connection.putheader('Host', self.realhost)
 
-class Client(object):
+
+class Client_Proxied(object):
     """
     Connection to a WordPress XML-RPC API endpoint.
 
@@ -13,15 +25,20 @@ class Client(object):
     `XmlrpcMethod`-derived class to `Client`'s `call` method.
     """
 
-    def __init__(self, url, username, password, blog_id=0):
+    def __init__(self, url, username, password, proxy='', blog_id=0):
         self.url = url
         self.username = username
         self.password = password
         self.blog_id = blog_id
 
         try:
-            self.server = xmlrpc_client.ServerProxy(url, allow_none=True)
-            self.supported_methods = self.server.mt.supportedMethods()
+			if proxy != '':
+				p = ProxiedTransport()
+				p.set_proxy(proxy)
+				self.server = xmlrpc_client.ServerProxy(url, allow_none=True, transport=p)
+			else:
+				self.server = xmlrpc_client.ServerProxy(url, allow_none=True)
+			self.supported_methods = self.server.mt.supportedMethods()
         except xmlrpc_client.ProtocolError:
             e = sys.exc_info()[1]
             raise ServerConnectionError(repr(e))
