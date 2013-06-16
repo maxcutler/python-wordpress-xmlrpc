@@ -53,7 +53,7 @@ class EditComment(AuthenticatedMethod):
     Edit an existing comment.
 
     Parameters:
-        `comment_id`: The idea of the comment to edit.
+        `comment_id`: The id of the comment to edit.
         `comment`: A :class:`WordPressComment` instance with at least the `content` value set.
 
     Returns: `True` on successful edit.
