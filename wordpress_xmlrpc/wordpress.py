@@ -102,7 +102,7 @@ class WordPressPost(WordPressBase):
         'excerpt': 'post_excerpt',
         'link': 'link',
         'comment_status': 'comment_status',
-        'ping_status': 'comment_status',
+        'ping_status': 'ping_status',
         'terms': TermsListFieldMap(WordPressTerm, 'terms'),
         'terms_names': 'terms_names',
         'custom_fields': 'custom_fields',
