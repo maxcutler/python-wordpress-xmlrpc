@@ -1,11 +1,44 @@
 import collections
+import httplib
+import socket
 import sys
+import xmlrpclib
 
 from wordpress_xmlrpc.compat import xmlrpc_client, dict_type
 from wordpress_xmlrpc.exceptions import ServerConnectionError, UnsupportedXmlrpcMethodError, InvalidCredentialsError, XmlrpcDisabledError
 
 
+class TimeoutHTTPConnection(httplib.HTTPConnection):
+
+    def connect(self):
+        httplib.HTTPConnection.connect(self)
+        self.sock.settimeout(self.timeout)
+
+
+class TimeoutHTTP(httplib.HTTP):
+    _connection_class = TimeoutHTTPConnection
+
+    def set_timeout(self, timeout):
+        self._conn.timeout = timeout
+
+
+class TimeoutTransport(xmlrpclib.Transport):
+
+    def __init__(self, timeout=socket._GLOBAL_DEFAULT_TIMEOUT, *args, **kwargs):
+        xmlrpclib.Transport.__init__(self, *args, **kwargs)
+        self.timeout = timeout
+
+    def make_connection(self, host):
+        if self._connection and host == self._connection[0]:
+            return self._connection[1]
+
+        chost, self._extra_headers, x509 = self.get_host_info(host)
+        self._connection = host, httplib.HTTPConnection(chost)
+        return self._connection[1]
+
+
 class Client(object):
+
     """
     Connection to a WordPress XML-RPC API endpoint.
 
@@ -13,14 +46,19 @@ class Client(object):
     `XmlrpcMethod`-derived class to `Client`'s `call` method.
     """
 
-    def __init__(self, url, username, password, blog_id=0):
+    def __init__(self, url, username, password, blog_id=0, timeout=30):
         self.url = url
         self.username = username
         self.password = password
         self.blog_id = blog_id
+        self.timeout = timeout
 
         try:
-            self.server = xmlrpc_client.ServerProxy(url, allow_none=True)
+            transport = TimeoutTransport(timeout=self.timeout)
+            self.server = xmlrpc_client.ServerProxy(
+                url,
+                allow_none=True,
+                transport=transport)
             self.supported_methods = self.server.mt.supportedMethods()
         except xmlrpc_client.ProtocolError:
             e = sys.exc_info()[1]
@@ -47,6 +85,7 @@ class Client(object):
 
 
 class XmlrpcMethod(object):
+
     """
     Base class for XML-RPC methods.
 
@@ -68,10 +107,12 @@ class XmlrpcMethod(object):
             if self.optional_args:
                 max_num_args = len(self.method_args) + len(self.optional_args)
                 if not (len(self.method_args) <= len(args) <= max_num_args):
-                    raise ValueError("Invalid number of parameters to %s" % self.method_name)
+                    raise ValueError("Invalid number of parameters to %s" %
+                                     self.method_name)
             else:
                 if len(args) != len(self.method_args):
-                    raise ValueError("Invalid number of parameters to %s" % self.method_name)
+                    raise ValueError("Invalid number of parameters to %s" %
+                                     self.method_name)
 
             for i, arg_name in enumerate(self.method_args):
                 setattr(self, arg_name, args[i])
@@ -132,6 +173,7 @@ class XmlrpcMethod(object):
 
 
 class AnonymousMethod(XmlrpcMethod):
+
     """
     An XML-RPC method for which no authentication is required.
     """
@@ -139,6 +181,7 @@ class AnonymousMethod(XmlrpcMethod):
 
 
 class AuthenticatedMethod(XmlrpcMethod):
+
     """
     An XML-RPC method for which user authentication is required.
 
