@@ -17,9 +17,9 @@ return these objects when possible.
 
 .. note::
 
-	The XML-RPC API is disabled in WordPress by default. To enable,
-	go to Settings->Writing->Remote Publishing and check the box for
-	XML-RPC.
+	In Wordpress 3.5+, the XML-RPC API is enabled by default and cannot be disabled.
+	In Wordpress 0.70-3.42, the XML-RPC API is disabled by default. To enable it,
+	go to Settings->Writing->Remote Publishing and check the box for XML-RPC.
 
 .. warning::
 
