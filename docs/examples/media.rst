@@ -18,7 +18,7 @@ The :class:`wordpress_xmlrpc.methods.media.UploadFile` method can be used to upl
 	# prepare metadata
 	data = {
 		'name': 'picture.jpg',
-		'type': 'image/jpg',  # mimetype
+		'type': 'image/jpeg',  # mimetype
 	}
 
 	# read the binary file and let the XMLRPC library encode it into base64
@@ -30,7 +30,7 @@ The :class:`wordpress_xmlrpc.methods.media.UploadFile` method can be used to upl
 	# 	'id': 6,
 	# 	'file': 'picture.jpg'
 	#	'url': 'http://www.example.com/wp-content/uploads/2012/04/16/picture.jpg',
-	#	'type': 'image/jpg',
+	#	'type': 'image/jpeg',
 	# }
 	attachment_id = response['id']
 
