@@ -1,6 +1,18 @@
 History/CHANGELOG
 =================
 
+2.3
+---
+
+(June 29, 2014)
+
+* Allow custom transports for XML-RPC connections.
+* Fix JPEG file MIME-type.
+* Import media methods correctly.
+* Fix ``ping_status`` field definition.
+* Workaround a bug encountered when fetching old draft posts (#40, props strycore).
+* Fixed some documentation bugs.
+
 2.2
 ---
 
