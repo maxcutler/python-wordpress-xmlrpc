@@ -1,6 +1,17 @@
 History/CHANGELOG
 =================
 
+2.2
+---
+
+(December 2, 2012)
+
+* Add ``wp.newComment`` variant for anonymous comments.
+* Added support for user methods.
+* Added support for post revisions.
+* Fixed comment ``date_created`` field definition.
+* Better unicode string handling.
+
 2.1
 ---
 
