@@ -8,11 +8,16 @@ to execute XML-RPC methods against your WordPress blog using its :meth:`Client.c
 
 Client
 ------
-.. class:: Client(url, username, password[, blog_id])
+.. class:: Client(url, username, password[, blog_id, transport])
 
 	:param url: URL of the blog's XML-RPC endpoint (e.g., http://www.example.com/xmlrpc.php)
 	:param username: Username of a valid user account on the WordPress blog
 	:param password: The password for this user account
+	:param blog_id: The blog's ID (note: WordPress ignores this value, but it is retained for backwards compatibility)
+	:param transport: Custom XML-RPC transport implementation. See `Python2`_ or `Python3`_ documentation.
+
+	.. _Python2: https://docs.python.org/2/library/xmlrpclib.html#example-of-client-usage
+	.. _Python3: https://docs.python.org/3/library/xmlrpc.client.html#example-of-client-usage
 
 	.. method:: call(method)
 
