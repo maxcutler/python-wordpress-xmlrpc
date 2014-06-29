@@ -6,7 +6,7 @@ except ImportError:
     from distutils.core import setup
 
 setup(name='python-wordpress-xmlrpc',
-      version='2.2',
+      version='2.3',
       description='WordPress XML-RPC API Integration Library',
       author='Max Cutler',
       author_email='max@maxcutler.com',
