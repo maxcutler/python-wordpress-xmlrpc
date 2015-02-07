@@ -13,14 +13,15 @@ class Client(object):
     `XmlrpcMethod`-derived class to `Client`'s `call` method.
     """
 
-    def __init__(self, url, username, password, blog_id=0, transport=None):
+    def __init__(self, url, username, password, blog_id=0, transport=None, verbose=False):
         self.url = url
         self.username = username
         self.password = password
         self.blog_id = blog_id
 
         try:
-            self.server = xmlrpc_client.ServerProxy(url, allow_none=True, transport=transport)
+            self.server = xmlrpc_client.ServerProxy(url, allow_none=True, transport=transport,
+		verbose=verbose)
             self.supported_methods = self.server.mt.supportedMethods()
         except xmlrpc_client.ProtocolError:
             e = sys.exc_info()[1]
