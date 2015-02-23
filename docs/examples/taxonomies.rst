@@ -39,7 +39,7 @@ And to create a new tag::
 	from wordpress_xmlrpc import WordPressTerm
 
 	tag = WordPressTerm()
-	tag.taxonomies = 'post_tag'
+	tag.taxonomy = 'post_tag'
 	tag.name = 'My New Tag'
 	tag.id = client.call(taxonomies.NewTerm(tag))
 
