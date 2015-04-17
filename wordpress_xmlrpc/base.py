@@ -1,3 +1,6 @@
+from mimetools import Message
+from StringIO import StringIO
+
 import collections
 import sys
 
@@ -19,13 +22,22 @@ class Client(object):
         self.password = password
         self.blog_id = blog_id
 
+        self.setup(transport, verbose)
+
+
+    def setup(self, transport, verbose):
         try:
-            self.server = xmlrpc_client.ServerProxy(url, allow_none=True, transport=transport,
+            self.server = xmlrpc_client.ServerProxy(self.url, allow_none=True, transport=transport,
 		verbose=verbose)
             self.supported_methods = self.server.mt.supportedMethods()
         except xmlrpc_client.ProtocolError:
             e = sys.exc_info()[1]
-            raise ServerConnectionError(repr(e))
+            if e.errcode == 301:
+                headers = Message(StringIO(e.headers))
+                self.url = headers['location']
+                self.setup(transport, verbose)
+            else:
+                raise ServerConnectionError(repr(e))
 
     def call(self, method):
         if method.method_name not in self.supported_methods:
