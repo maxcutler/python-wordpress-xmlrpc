@@ -1,6 +1,3 @@
-from email.message import Message
-from io import StringIO
-
 import collections
 import sys
 
@@ -33,8 +30,10 @@ class Client(object):
         except xmlrpc_client.ProtocolError:
             e = sys.exc_info()[1]
             if e.errcode == 301:
-                headers = Message(StringIO(e.headers))
-                self.url = headers['location']
+                try:
+                    self.url = e.headers['location']
+                except KeyError:
+                    self.url = e.headers['Location']
                 self.setup(transport, verbose)
             else:
                 raise ServerConnectionError(repr(e))
