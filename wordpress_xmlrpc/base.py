@@ -1,5 +1,5 @@
-from mimetools import Message
-from StringIO import StringIO
+from email.message import Message
+from io import StringIO
 
 import collections
 import sys
