@@ -31,6 +31,7 @@ remote call and return the result.
 	>>> from wordpress_xmlrpc.methods.posts import GetPosts, NewPost
 	>>> from wordpress_xmlrpc.methods.users import GetUserInfo
 
+	# if your site is hosted on wordpress.com, possibly this URL scheme should be https://
 	>>> wp = Client('http://mysite.wordpress.com/xmlrpc.php', 'username', 'password')
 	>>> wp.call(GetPosts())
 	[<WordPressPost: hello-world (id=1)>]
