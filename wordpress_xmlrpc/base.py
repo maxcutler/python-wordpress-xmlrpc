@@ -1,11 +1,13 @@
 import collections
 import sys
+import urllib.parse
 
 from wordpress_xmlrpc.compat import xmlrpc_client, dict_type
 from wordpress_xmlrpc.exceptions import ServerConnectionError, UnsupportedXmlrpcMethodError, InvalidCredentialsError, XmlrpcDisabledError
 
 
 class Client(object):
+
     """
     Connection to a WordPress XML-RPC API endpoint.
 
@@ -13,19 +15,18 @@ class Client(object):
     `XmlrpcMethod`-derived class to `Client`'s `call` method.
     """
 
-    def __init__(self, url, username, password, blog_id=0, transport=None, verbose=False):
+    def __init__(self, url, username, password, blog_id=0, transport=None, verbose=False, safe_transport=None):
         self.url = url
         self.username = username
         self.password = password
         self.blog_id = blog_id
 
-        self.setup(transport, verbose)
+        self.setup(transport, verbose, safe_transport)
 
-
-    def setup(self, transport, verbose):
+    def setup(self, transport, verbose, safe_transport):
         try:
             self.server = xmlrpc_client.ServerProxy(self.url, allow_none=True, transport=transport,
-		verbose=verbose)
+                                                    verbose=verbose)
             self.supported_methods = self.server.mt.supportedMethods()
         except xmlrpc_client.ProtocolError:
             e = sys.exc_info()[1]
@@ -34,7 +35,12 @@ class Client(object):
                     self.url = e.headers['location']
                 except KeyError:
                     self.url = e.headers['Location']
-                self.setup(transport, verbose)
+
+                protocol, _ = urllib.parse.splittype(self.url)
+                if protocol == 'https':
+                    transport = safe_transport
+
+                self.setup(transport, verbose, None)
             else:
                 raise ServerConnectionError(repr(e))
 
@@ -59,6 +65,7 @@ class Client(object):
 
 
 class XmlrpcMethod(object):
+
     """
     Base class for XML-RPC methods.
 
@@ -80,10 +87,12 @@ class XmlrpcMethod(object):
             if self.optional_args:
                 max_num_args = len(self.method_args) + len(self.optional_args)
                 if not (len(self.method_args) <= len(args) <= max_num_args):
-                    raise ValueError("Invalid number of parameters to %s" % self.method_name)
+                    raise ValueError(
+                        "Invalid number of parameters to %s" % self.method_name)
             else:
                 if len(args) != len(self.method_args):
-                    raise ValueError("Invalid number of parameters to %s" % self.method_name)
+                    raise ValueError(
+                        "Invalid number of parameters to %s" % self.method_name)
 
             for i, arg_name in enumerate(self.method_args):
                 setattr(self, arg_name, args[i])
@@ -144,6 +153,7 @@ class XmlrpcMethod(object):
 
 
 class AnonymousMethod(XmlrpcMethod):
+
     """
     An XML-RPC method for which no authentication is required.
     """
@@ -151,6 +161,7 @@ class AnonymousMethod(XmlrpcMethod):
 
 
 class AuthenticatedMethod(XmlrpcMethod):
+
     """
     An XML-RPC method for which user authentication is required.
 
