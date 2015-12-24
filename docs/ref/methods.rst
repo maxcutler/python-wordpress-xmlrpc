@@ -49,7 +49,7 @@ methods.comments
 	.. autoclass:: NewComment(post_id, comment)
 	.. autoclass:: NewAnonymousComment(post_id, comment)
 	.. autoclass:: EditComment(comment_id, comment)
-	.. autoclass:: DeleteComment(commend_id)
+	.. autoclass:: DeleteComment(comment_id)
 	.. autoclass:: GetCommentStatusList()
 	.. autoclass:: GetCommentCount(post_id)
 
