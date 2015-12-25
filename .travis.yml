@@ -20,6 +20,9 @@ addons:
     packages:
       - php5
 
+notifications:
+  email: false
+
 env:
   - WP_VERSION=4.4
   - WP_INSTALL_PATH=/tmp/wordpress
