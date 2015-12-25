@@ -1,7 +1,8 @@
 # Travis CI Configuration File
 
-# Use Travis CI's faster Docker-based infrastructure.
-sudo: false
+# Use Travis CI's beta Trusty environments
+sudo: required
+dist: trusty
 
 language: python
 
