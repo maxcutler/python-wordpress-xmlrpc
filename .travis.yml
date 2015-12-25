@@ -10,17 +10,16 @@ python:
   - "2.7"
   - "3.2"
 
-services:
-  - mysql
-
 hosts:
   wp.dev: 127.0.0.1
 
 addons:
   apt:
     packages:
-      - php5
+      - php5-core
       - php5-cli
+      - mysql-server
+      - php5-mysql
 
 notifications:
   email: false
@@ -37,7 +36,7 @@ before_script:
   - curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
   - chmod +x wp-cli.phar
   - ./wp-cli.phar core download --path=$WP_INSTALL_PATH --version=$WP_VERSION
-  - ./wp-cli.phar core config --dbname=wordpress --dbuser=travis --dbhost=localhost --path=$WP_INSTALL_PATH
+  - ./wp-cli.phar core config --dbname=wordpress --dbuser=troot --dbhost=localhost --path=$WP_INSTALL_PATH
   - ./wp-cli.phar core install --admin_name=admin --admin_password=admin --admin_email=admin@example.com --url=$WP_URL --title=WordPress --path=$WP_INSTALL_PATH
   - ./wp-cli.phar server --host=0.0.0.0 --path=$WP_INSTALL_PATH
   - touch wp-config.cfg
