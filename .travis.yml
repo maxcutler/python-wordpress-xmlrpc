@@ -45,6 +45,7 @@ before_script:
   - echo "username = admin" >> wp-config.cfg
   - echo "password = admin" >> wp-config.cfg
   - echo "userid = 1" >> wp-config.cfg
+  - cat wp-config.cfg
 
 install:
   - pip install nose
