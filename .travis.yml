@@ -38,7 +38,7 @@ before_script:
   - ./wp-cli.phar core download --path=$WP_INSTALL_PATH --version=$WP_VERSION
   - ./wp-cli.phar core config --dbname=wordpress --dbuser=root --dbhost=localhost --path=$WP_INSTALL_PATH
   - ./wp-cli.phar core install --admin_name=admin --admin_password=admin --admin_email=admin@example.com --url=$WP_URL --title=WordPress --path=$WP_INSTALL_PATH
-  - ./wp-cli.phar server --host=0.0.0.0 --path=$WP_INSTALL_PATH
+  - ./wp-cli.phar server --host=0.0.0.0 --path=$WP_INSTALL_PATH &
   - touch wp-config.cfg
   - echo "[wordpress]" >> wp-config.cfg
   - echo "url = $WP_URL" >> wp-config.cfg
