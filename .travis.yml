@@ -19,6 +19,7 @@ addons:
   apt:
     packages:
       - php5
+      - php5-cli
 
 notifications:
   email: false
