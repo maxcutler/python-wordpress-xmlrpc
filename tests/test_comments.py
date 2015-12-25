@@ -17,6 +17,7 @@ class TestComments(WordPressTestCase):
         post.title = 'Comments Test Post'
         post.slug = 'comments-test-post'
         post.user = self.userid
+        post.comment_status = 'open'
         self.post_id = self.client.call(posts.NewPost(post))
 
     @attr('comments')
