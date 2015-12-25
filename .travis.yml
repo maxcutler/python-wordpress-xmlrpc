@@ -24,9 +24,10 @@ notifications:
   email: false
 
 env:
-  - WP_VERSION=4.4
-  - WP_INSTALL_PATH=/tmp/wordpress
-  - WP_URL=http://wp.dev:8080
+  global:
+    - WP_VESION=4.4
+    - WP_INSTALL_PATH=/tmp/wordpress
+    - WP_URL=http://wp.dev:8080
 
 # Clones WordPress and configures our testing environment.
 before_script:
