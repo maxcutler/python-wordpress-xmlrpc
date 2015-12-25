@@ -26,7 +26,7 @@ notifications:
 
 env:
   global:
-    - WP_VESION=4.4
+    - WP_VERSION=4.4
     - WP_INSTALL_PATH=/tmp/wordpress
     - WP_URL=http://wp.dev:8080
 
