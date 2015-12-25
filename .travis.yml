@@ -38,7 +38,7 @@ before_script:
   - ./wp-cli.phar server --host=0.0.0.0 --path=$WP_INSTALL_PATH &
   - touch wp-config.cfg
   - echo "[wordpress]" >> wp-config.cfg
-  - echo "url = $WP_URL" >> wp-config.cfg
+  - echo "url = $WP_URL/xmlrpc.php" >> wp-config.cfg
   - echo "username = admin" >> wp-config.cfg
   - echo "password = admin" >> wp-config.cfg
   - echo "userid = 1" >> wp-config.cfg
