@@ -1,0 +1,51 @@
+# Travis CI Configuration File
+
+# Use Travis CI's beta Trusty environments
+sudo: required
+dist: trusty
+
+language: python
+
+python:
+  - "2.7"
+  - "3.2"
+  - "3.5"
+
+addons:
+  apt:
+    packages:
+      - php5-common
+      - php5-cli
+      - mysql-server
+      - php5-mysql
+
+notifications:
+  email: false
+
+env:
+  global:
+    - WP_VERSION=4.4
+    - WP_INSTALL_PATH=/tmp/wordpress
+    - WP_URL=http://127.0.0.1:8080
+
+# Clones WordPress and configures our testing environment.
+before_script:
+  - mysql -e "CREATE DATABASE wordpress;" -uroot
+  - curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+  - chmod +x wp-cli.phar
+  - ./wp-cli.phar core download --path=$WP_INSTALL_PATH --version=$WP_VERSION
+  - ./wp-cli.phar core config --dbname=wordpress --dbuser=root --dbhost=localhost --path=$WP_INSTALL_PATH
+  - ./wp-cli.phar core install --admin_name=admin --admin_password=admin --admin_email=admin@example.com --url=$WP_URL --title=WordPress --path=$WP_INSTALL_PATH
+  - ./wp-cli.phar server --host=0.0.0.0 --path=$WP_INSTALL_PATH &
+  - touch wp-config.cfg
+  - echo "[wordpress]" >> wp-config.cfg
+  - echo "url = $WP_URL/xmlrpc.php" >> wp-config.cfg
+  - echo "username = admin" >> wp-config.cfg
+  - echo "password = admin" >> wp-config.cfg
+  - echo "userid = 1" >> wp-config.cfg
+  - cat wp-config.cfg
+
+install:
+  - pip install nose
+
+script: nosetests

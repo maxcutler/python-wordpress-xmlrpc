@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/maxcutler/python-wordpress-xmlrpc.svg?branch=master
+    :target: https://travis-ci.org/maxcutler/python-wordpress-xmlrpc
+
 Overview
 ========
 
