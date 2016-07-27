@@ -30,7 +30,7 @@ class Client(object):
             self.supported_methods = self.server.mt.supportedMethods()
         except xmlrpc_client.ProtocolError:
             e = sys.exc_info()[1]
-            if e.errcode == 301:
+            if e.errcode in [301, 302]:
                 try:
                     self.url = e.headers['location']
                 except KeyError:
