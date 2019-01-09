@@ -21,7 +21,7 @@ WordPressPost
 		* ping_status
 		* terms (`list` of :class:`WordPressTerm`\s)
 		* terms_names (`dict`)
-		* custom_fields (`dict`)
+		* custom_fields (`list` of `dict`)
 		* enclosure (`dict`)
 		* password
 		* post_format
