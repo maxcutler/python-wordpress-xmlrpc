@@ -67,7 +67,7 @@ or one of its subclasses (``AnonymousMethod`` or ``AuthenticatedMethod``).
 The ``XmlrpcMethod`` class provides a number of properties which you
 can override to modify the behavior of the method call.
 
-Sample class to call a custom method added by a ficticious plugin::
+Sample class to call a custom method added by a fictitious plugin::
 
 	from wordpress_xmlrpc import AuthenticatedMethod
 
