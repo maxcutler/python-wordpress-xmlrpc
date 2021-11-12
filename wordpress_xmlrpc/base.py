@@ -1,4 +1,4 @@
-import collections
+import collections.abc
 import sys
 
 from wordpress_xmlrpc.compat import xmlrpc_client, dict_type
