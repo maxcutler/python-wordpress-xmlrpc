@@ -1,8 +1,12 @@
-import collections
 import sys
 
 from wordpress_xmlrpc.compat import xmlrpc_client, dict_type
 from wordpress_xmlrpc.exceptions import ServerConnectionError, UnsupportedXmlrpcMethodError, InvalidCredentialsError, XmlrpcDisabledError
+
+try:
+    from collections.abc import Iterable  # noqa
+except ImportError:
+    from collections import Iterable  # noqa
 
 
 class Client(object):
@@ -126,7 +130,7 @@ class XmlrpcMethod(object):
         if self.results_class and raw_result:
             if isinstance(raw_result, dict_type):
                 return self.results_class(raw_result)
-            elif isinstance(raw_result, collections.Iterable):
+            elif isinstance(raw_result, Iterable):
                 return [self.results_class(result) for result in raw_result]
 
         return raw_result
